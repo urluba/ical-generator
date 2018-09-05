@@ -1,0 +1,1 @@
+web: gunicorn wsgi:FLASK_APP --access-logfile=-
