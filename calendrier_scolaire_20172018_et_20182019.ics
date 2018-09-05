@@ -1,0 +1,205 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//www.marudot.com//iCal Event Maker
+X-WR-CALNAME:Calendrier scolaire 2017-2018 et 2018-2019
+CALSCALE:GREGORIAN
+BEGIN:VTIMEZONE
+TZID:Europe/Berlin
+TZURL:http://tzurl.org/zoneinfo-outlook/Europe/Berlin
+X-LIC-LOCATION:Europe/Berlin
+BEGIN:DAYLIGHT
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0200
+TZNAME:CEST
+DTSTART:19700329T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0100
+TZNAME:CET
+DTSTART:19701025T030000
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+DTSTAMP:20170824T121824Z
+UID:20170824T121824Z-1717710194@marudot.com
+DTSTART;TZID="Europe/Berlin":20170904T000000
+DTEND;TZID="Europe/Berlin":20170904T000000
+SUMMARY:Rentrée scolaire
+DESCRIPTION:Rentrée scolaire des élèves pour les Zones A\, B\, C.
+LOCATION:Aix-Marseille\, Amiens\, Besançon\, Bordeaux\, Caen\, Clermont-Ferrand\, Créteil\, Dijon\, Grenoble\, Lille\, Limoges\, Lyon\, Montpellier\, Nancy-Metz\, Nantes\, Nice\, Orléans-Tours\, Paris\, Poitiers\, Reims\, Rennes\, Rouen\, Strasbourg\, Toulouse\, Versailles
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20170824T121824Z
+UID:20170824T121824Z-1930625348@marudot.com
+DTSTART;TZID="Europe/Berlin":20171021T000000
+DTEND;TZID="Europe/Berlin":20171106T000000
+SUMMARY:Vacances de la Toussaint
+DESCRIPTION:Vacances de la Toussaint pour les zones A\, B et C.
+LOCATION:Aix-Marseille\, Amiens\, Besançon\, Bordeaux\, Caen\, Clermont-Ferrand\, Créteil\, Dijon\, Grenoble\, Lille\, Limoges\, Lyon\, Montpellier\, Nancy-Metz\, Nantes\, Nice\, Orléans-Tours\, Paris\, Poitiers\, Reims\, Rennes\, Rouen\, Strasbourg\, Toulouse\, Versailles
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20170824T121824Z
+UID:20170824T121824Z-264622785@marudot.com
+DTSTART;TZID="Europe/Berlin":20171223T000000
+DTEND;TZID="Europe/Berlin":20180108T000000
+SUMMARY:Vacances de Noël
+DESCRIPTION:Vacances de Noël pour les zones A\, B et C.
+LOCATION:Aix-Marseille\, Amiens\, Besançon\, Bordeaux\, Caen\, Clermont-Ferrand\, Créteil\, Dijon\, Grenoble\, Lille\, Limoges\, Lyon\, Montpellier\, Nancy-Metz\, Nantes\, Nice\, Orléans-Tours\, Paris\, Poitiers\, Reims\, Rennes\, Rouen\, Strasbourg\, Toulouse\, Versailles
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20170824T121824Z
+UID:20170824T121824Z-1114468133@marudot.com
+DTSTART;TZID="Europe/Berlin":20180210T000000
+DTEND;TZID="Europe/Berlin":20180226T000000
+SUMMARY:Vacances d'Hiver - Zone A
+DESCRIPTION:Vacances d'Hiver pour la zone A
+LOCATION:Besançon\, Bordeaux\, Clermont-Ferrand\, Dijon\, Grenoble\, Limoges\, Lyon\, Poitiers
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20170824T121824Z
+UID:20170824T121824Z-1060126660@marudot.com
+DTSTART;TZID="Europe/Berlin":20180217T000000
+DTEND;TZID="Europe/Berlin":20180305T000000
+SUMMARY:Vacances d'Hiver - Zone C
+DESCRIPTION:Vacances d'Hiver pour la zone C
+LOCATION:Créteil\, Montpellier\, Paris\, Toulouse\, Versailles
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20170824T121824Z
+UID:20170824T121824Z-1130508333@marudot.com
+DTSTART;TZID="Europe/Berlin":20180224T000000
+DTEND;TZID="Europe/Berlin":20180312T000000
+SUMMARY:Vacances d'Hiver - Zone B
+DESCRIPTION:Vacances d'Hiver pour la zone B
+LOCATION:Aix-Marseille\, Amiens\, Caen\, Lille\, Nancy-Metz\, Nantes\, Nice\, Orléans-Tours\, Reims\, Rennes\, Rouen\, Strasbourg
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20170824T121824Z
+UID:20170824T121824Z-571475706@marudot.com
+DTSTART;TZID="Europe/Berlin":20180407T000000
+DTEND;TZID="Europe/Berlin":20180423T000000
+SUMMARY:Vacances de Printemps - Zone A
+DESCRIPTION:Vacances de Printemps de la zone A
+LOCATION:Besançon\, Bordeaux\, Clermont-Ferrand\, Dijon\, Grenoble\, Limoges\, Lyon\, Poitiers
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20170824T121824Z
+UID:20170824T121824Z-339195215@marudot.com
+DTSTART;TZID="Europe/Berlin":20180414T000000
+DTEND;TZID="Europe/Berlin":20180430T000000
+SUMMARY:Vacances de Printemps - Zone C
+DESCRIPTION:Vacances de Printemps pour la zone C
+LOCATION:Créteil\, Montpellier\, Paris\, Toulouse\, Versailles
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20170824T121824Z
+UID:20170824T121824Z-1704499821@marudot.com
+DTSTART;TZID="Europe/Berlin":20180421T000000
+DTEND;TZID="Europe/Berlin":20180507T000000
+SUMMARY:Vacances de Printemps - Zone B
+DESCRIPTION:Vacances de Printemps pour la zone B
+LOCATION:Aix-Marseille\, Amiens\, Caen\, Lille\, Nancy-Metz\, Nantes\, Nice\, Orléans-Tours\, Reims\, Rennes\, Rouen\, Strasbourg
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20170824T121824Z
+UID:20170824T121824Z-1402808763@marudot.com
+DTSTART;TZID="Europe/Berlin":20180707T000000
+DTEND;TZID="Europe/Berlin":20180903T000000
+SUMMARY:Vacances d'Été
+DESCRIPTION:Vacances d'Été des zones A\, B et C. 
+LOCATION:Aix-Marseille\, Amiens\, Besançon\, Bordeaux\, Caen\, Clermont-Ferrand\, Créteil\, Dijon\, Grenoble\, Lille\, Limoges\, Lyon\, Montpellier\, Nancy-Metz\, Nantes\, Nice\, Orléans-Tours\, Paris\, Poitiers\, Reims\, Rennes\, Rouen\, Strasbourg\, Toulouse\, Versailles
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20170824T121824Z
+UID:20170824T121824Z-666856096@marudot.com
+DTSTART;TZID="Europe/Berlin":20180903T000000
+DTEND;TZID="Europe/Berlin":20180903T000000
+SUMMARY:Rentrée scolaire
+DESCRIPTION:Rentrée scolaire pour les élèves des zones A\, B et C. 
+LOCATION:Aix-Marseille\, Amiens\, Besançon\, Bordeaux\, Caen\, Clermont-Ferrand\, Créteil\, Dijon\, Grenoble\, Lille\, Limoges\, Lyon\, Montpellier\, Nancy-Metz\, Nantes\, Nice\, Orléans-Tours\, Paris\, Poitiers\, Reims\, Rennes\, Rouen\, Strasbourg\, Toulouse\, Versailles
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20170824T121824Z
+UID:20170824T121824Z-2084896020@marudot.com
+DTSTART;TZID="Europe/Berlin":20181020T000000
+DTEND;TZID="Europe/Berlin":20181105T000000
+SUMMARY:Vacances de la Toussaint
+DESCRIPTION:Vacances de la Toussaint pour les zones A\, B et C
+LOCATION:Aix-Marseille\, Amiens\, Besançon\, Bordeaux\, Caen\, Clermont-Ferrand\, Créteil\, Dijon\, Grenoble\, Lille\, Limoges\, Lyon\, Montpellier\, Nancy-Metz\, Nantes\, Nice\, Orléans-Tours\, Paris\, Poitiers\, Reims\, Rennes\, Rouen\, Strasbourg\, Toulouse\, Versailles
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20170824T121824Z
+UID:20170824T121824Z-1402644208@marudot.com
+DTSTART;TZID="Europe/Berlin":20181222T000000
+DTEND;TZID="Europe/Berlin":20190107T000000
+SUMMARY:Vacances de Noël
+DESCRIPTION:Vacances de Noël pour les zones A\, B et C.
+LOCATION:Aix-Marseille\, Amiens\, Besançon\, Bordeaux\, Caen\, Clermont-Ferrand\, Créteil\, Dijon\, Grenoble\, Lille\, Limoges\, Lyon\, Montpellier\, Nancy-Metz\, Nantes\, Nice\, Orléans-Tours\, Paris\, Poitiers\, Reims\, Rennes\, Rouen\, Strasbourg\, Toulouse\, Versailles
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20170824T121824Z
+UID:20170824T121824Z-1323419504@marudot.com
+DTSTART;TZID="Europe/Berlin":20190209T000000
+DTEND;TZID="Europe/Berlin":20190225T000000
+SUMMARY:Vacances d'Hiver - Zone B
+DESCRIPTION:Vacances d'Hiver de la zone B
+LOCATION:Aix-Marseille\, Amiens\, Caen\, Lille\, Nancy-Metz\, Nantes\, Nice\, Orléans-Tours\, Reims\, Rennes\, Rouen\, Strasbourg
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20170824T121824Z
+UID:20170824T121824Z-1444584944@marudot.com
+DTSTART;TZID="Europe/Berlin":20190216T000000
+DTEND;TZID="Europe/Berlin":20190304T000000
+SUMMARY:Vacances d'Hiver - Zone A
+DESCRIPTION:Vacances d'Hiver de la zone A
+LOCATION:Besançon\, Bordeaux\, Clermont-Ferrand\, Dijon\, Grenoble\, Limoges\, Lyon\, Poitiers
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20170824T121824Z
+UID:20170824T121824Z-1473250825@marudot.com
+DTSTART;TZID="Europe/Berlin":20190223T000000
+DTEND;TZID="Europe/Berlin":20190311T000000
+SUMMARY:Vacances d'Hiver - Zone C
+DESCRIPTION:Vacances d'Hiver de la zone C
+LOCATION:Créteil\, Montpellier\, Paris\, Toulouse\, Versailles
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20170824T121824Z
+UID:20170824T121824Z-1146207174@marudot.com
+DTSTART;TZID="Europe/Berlin":20190406T000000
+DTEND;TZID="Europe/Berlin":20190423T000000
+SUMMARY:Vacances de Printemps - Zone B
+DESCRIPTION:Vacances de Printemps pour la zone B
+LOCATION:Aix-Marseille\, Amiens\, Caen\, Lille\, Nancy-Metz\, Nantes\, Nice\, Orléans-Tours\, Reims\, Rennes\, Rouen\, Strasbourg
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20170824T121824Z
+UID:20170824T121824Z-99749572@marudot.com
+DTSTART;TZID="Europe/Berlin":20190413T000000
+DTEND;TZID="Europe/Berlin":20190429T000000
+SUMMARY:Vacances de Printemps - Zone A
+DESCRIPTION:Vacances de Printemps de la zone A
+LOCATION:Besançon\, Bordeaux\, Clermont-Ferrand\, Dijon\, Grenoble\, Limoges\, Lyon\, Poitiers
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20170824T121824Z
+UID:20170824T121824Z-1219050155@marudot.com
+DTSTART;TZID="Europe/Berlin":20190420T000000
+DTEND;TZID="Europe/Berlin":20190506T000000
+SUMMARY:Vacances de Printemps - Zone C
+DESCRIPTION:Vacances de Printemps de la zone C
+LOCATION:Créteil\, Montpellier\, Paris\, Toulouse\, Versailles
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20170824T121824Z
+UID:20170824T121824Z-585558848@marudot.com
+DTSTART;TZID="Europe/Berlin":20190706T000000
+DTEND;TZID="Europe/Berlin":20190706T000000
+SUMMARY:Vacances d'Été
+DESCRIPTION:Vacances d'Été pour les zones A\, B et C.
+LOCATION:Aix-Marseille\, Amiens\, Besançon\, Bordeaux\, Caen\, Clermont-Ferrand\, Créteil\, Dijon\, Grenoble\, Lille\, Limoges\, Lyon\, Montpellier\, Nancy-Metz\, Nantes\, Nice\, Orléans-Tours\, Paris\, Poitiers\, Reims\, Rennes\, Rouen\, Strasbourg\, Toulouse\, Versailles
+END:VEVENT
+END:VCALENDAR
