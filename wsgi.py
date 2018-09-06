@@ -1,3 +1,5 @@
+import datetime
+from dateutil.relativedelta import relativedelta, MO
 from flask import Flask, current_app, abort
 from ical import render_calendar
 from ics import Calendar
@@ -16,8 +18,8 @@ def create_app() -> Flask:
     with open(holidays_file) as file_descriptor:
         app.config['holidays_calendar'] = Calendar(file_descriptor.read())
 
-    app.config['first_monday'] = arrow.get('2018-09-03')
-    app.config['last_monday'] = arrow.get('2019-07-01')
+    app.config['first_school_monday'] = arrow.get('2018-09-03')
+    app.config['last_school_monday'] = arrow.get('2019-07-01')
 
     return app
 
@@ -37,10 +39,17 @@ def get_ical(planning_name: str) -> str:
     else:
         abort(404)
 
+    today = datetime.datetime.utcnow()
+    first_monday = arrow.get(today + relativedelta(weekday=MO(-1)))
+    last_monday = arrow.get(first_monday + relativedelta(months=1))
+
+    if last_monday >= first_monday:
+        last_monday = current_app.config['last_school_monday']
+
     result = render_calendar(
         planning=requested_planning,
-        start_monday=current_app.config['first_monday'],
-        end_monday=current_app.config['last_monday'],
+        start_monday=first_monday,
+        end_monday=last_monday,
         holidays_calendar=current_app.config['holidays_calendar']
     )
 
