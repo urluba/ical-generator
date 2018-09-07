@@ -41,7 +41,7 @@ SCHOOL_6A_CALENDAR = [
         rrule=dict(byday=['MO']),
     ),
     dict(
-        summary='mathématiques',
+        summary='Mathématiques',
         location='C5',
         duration=timedelta(hours=1),
         start=(10, 30),
@@ -71,7 +71,7 @@ SCHOOL_6A_CALENDAR = [
         rrule=dict(byday=['TU']),
     ),
     dict(
-        summary='mathématiques',
+        summary='Mathématiques',
         location='C5',
         duration=timedelta(hours=1),
         start=(11, 30),
@@ -97,6 +97,118 @@ SCHOOL_6A_CALENDAR = [
         duration=timedelta(hours=1),
         start=(10, 30),
         rrule=dict(byday=['WE']),
+    ),
+    dict(
+        summary='TECHNOLOGIE',
+        location='A6',
+        duration=timedelta(hours=1),
+        start=(10, 30),
+        rrule=dict(byday=['TH']),
+        week_type='a'
+    ),
+    dict(
+        summary='Mathématiques',
+        location='C5',
+        duration=timedelta(hours=1),
+        start=(10, 30),
+        rrule=dict(byday=['TH']),
+        week_type='b'
+    ),
+    dict(
+        summary='Français',
+        location='D5',
+        duration=timedelta(hours=1),
+        start=(11, 30),
+        rrule=dict(byday=['TH']),
+    ),
+    dict(
+        summary='HIST. GEO. EN. MOR. CIV.',
+        location='A3',
+        duration=timedelta(hours=1),
+        start=(13, 30),
+        rrule=dict(byday=['TH']),
+    ),
+    dict(
+        summary='ANGLAIS',
+        location='B4',
+        duration=timedelta(hours=1),
+        start=(14, 30),
+        rrule=dict(byday=['TH']),
+    ),
+    dict(
+        summary='Mathématiques',
+        location='C5',
+        duration=timedelta(hours=1),
+        start=(15, 30),
+        rrule=dict(byday=['TH']),
+    ),
+    dict(
+        summary='HIST. GEO. EN. MOR. CIV.',
+        location='A3',
+        duration=timedelta(hours=1),
+        start=(9, 30),
+        rrule=dict(byday=['FR']),
+        week_type='a'
+    ),
+    dict(
+        summary='Mathématiques',
+        location='C5',
+        duration=timedelta(hours=1),
+        start=(9, 30),
+        rrule=dict(byday=['FR']),
+        week_type='b'
+    ),
+    dict(
+        summary='PHYSIQUE-CHIMIE',
+        location='',
+        duration=timedelta(hours=1),
+        start=(10, 30),
+        rrule=dict(byday=['FR']),
+    ),
+    dict(
+        summary='SVT',
+        location='D8',
+        duration=timedelta(hours=1),
+        start=(11, 30),
+        rrule=dict(byday=['FR']),
+    ),
+    dict(
+        summary='TECHNOLOGIE',
+        location='A6',
+        duration=timedelta(hours=1),
+        start=(13, 30),
+        rrule=dict(byday=['FR']),
+        week_type='a'
+    ),
+    dict(
+        summary='SVT',
+        location='D8',
+        duration=timedelta(hours=1),
+        start=(14, 30),
+        rrule=dict(byday=['FR']),
+    ),
+    dict(
+        summary='Français',
+        location='D5',
+        duration=timedelta(hours=1),
+        start=(13, 30),
+        rrule=dict(byday=['FR']),
+        week_type='b'
+    ),
+    dict(
+        summary='TECHNOLOGIE',
+        location='A6',
+        duration=timedelta(hours=1),
+        start=(14, 30),
+        rrule=dict(byday=['FR']),
+        week_type='b'
+    ),
+    dict(
+        summary='Mathématiques',
+        location='C5',
+        duration=timedelta(hours=1),
+        start=(15, 30),
+        rrule=dict(byday=['FR']),
     ),
 ]
 
