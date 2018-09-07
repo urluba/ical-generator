@@ -132,7 +132,7 @@ SCHOOL_6A_CALENDAR = [
         summary='HIST. GEO. EN. MOR. CIV.',
         location='A3',
         duration=timedelta(hours=1),
-        start=(13, 3, 3),
+        start=(13, 30, 3),
         rrule=dict(byday=['TH']),
     ),
     dict(
