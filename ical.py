@@ -1,281 +1,190 @@
-# pylint: disable=import-error, invalid-name
-'''
-Generate ICS files from hardcoded planning
-TODO:
-- Fix TZ issue
-- Review global vars
-- Bus
-- Web version ?
-'''
-from datetime import datetime, timedelta
-import arrow
-from ics import Calendar, Event
+from datetime import datetime, timedelta, date
+from dateutil.relativedelta import relativedelta, MO, SU
+from icalendar import Calendar, Event
+import pytz
 
-def is_during_holidays(searched_date: arrow.Arrow, calendar: object) -> bool:
+BUS_CALENDAR_START = datetime(2018, 9, 3)
+BUS_CALENDAR_END = datetime(2019, 7, 8)
+
+SCHOOL_CALENDAR_START = BUS_CALENDAR_START
+SCHOOL_CALENDAR_END = BUS_CALENDAR_END
+
+BUS_CALENDAR = [
+    dict(
+        summary='roseraie',
+        start=(7, 51),
+        duration=timedelta(minutes=1),
+        location='roseraie',
+        rrule=dict(
+            byday=['MO', 'TU', 'WE', 'TH', 'FR'],
+        )
+    ),
+    dict(
+        summary='roseraie',
+        start=(8, 57),
+        duration=timedelta(minutes=1),
+        location='roseraie',
+        rrule=dict(
+            byday=['MO', 'TU', 'WE', 'TH', 'FR'],
+        )
+    ),
+    dict(
+        summary='place du clos',
+        start=(12, 38),
+        duration=timedelta(minutes=1),
+        location='place du clos',
+        rrule=dict(
+            byday=['WE'],
+        )
+    ),
+    dict(
+        summary='place du clos',
+        start=(15, 42),
+        duration=timedelta(minutes=1),
+        location='place du clos',
+        rrule=dict(
+            byday=['MO', 'TU', 'WE', 'TH', 'FR'],
+        )
+    ),
+    dict(
+        summary='place du clos',
+        start=(16, 42),
+        duration=timedelta(minutes=1),
+        location='place du clos',
+        rrule=dict(
+            byday=['MO', 'TU', 'WE', 'TH', 'FR'],
+        )
+    ),
+    dict(
+        summary='place du clos',
+        start=(17, 39),
+        duration=timedelta(minutes=1),
+        location='place du clos',
+        rrule=dict(
+            byday=['MO', 'TU', 'WE', 'TH', 'FR'],
+        )
+    ),
+    dict(
+        summary='place du clos',
+        start=(16, 45),
+        duration=timedelta(minutes=1),
+        location='place du clos',
+        rrule=dict(
+            byday=['TH', 'FR'],
+        )
+    ),
+]
+
+def generate_school_bus_calendar() -> Calendar:
     '''
-    Return true if given date is during holidays else False
+    Return a calendar for school bus
     '''
-    searched_event = Event()
-    searched_event.begin = searched_date
-    searched_event.make_all_day()
-
-    for holidays in calendar.events:
-        # Ignore others zones and non holidays events
-        if any([
-                'Vacances' not in holidays.name,
-                'Zone A' in holidays.name,
-                'Zone B' in holidays.name,
-        ]):
-            continue
-
-        if all([
-                searched_event.begin >= holidays.begin,
-                searched_event.end <= holidays.end,
-        ]):
-            return True
-
-    return False
-
-week_6f_a = [
-    # Monday
-    [
-        ('eps', 9, 30, 60),
-        ('techno', 10, 30, 60),
-        ('anglais', 11, 30, 60),
-        ('hist/geo', 13, 30, 60),
-    ],
-    # Tuesday
-    [
-        ('francais', 9, 30, 60),
-        ('math', 10, 30, 60),
-        ('dessin', 13, 30, 60),
-        ('francais', 14, 30, 60),
-        ('anglais', 15, 30, 60),
-    ],
-    # Wednesday
-    [
-        ('anglais', 8, 30, 60),
-        ('physique', 9, 30, 60),
-        ('musique', 10, 30, 60),
-        ('francais', 11, 30, 60),
-    ],
-    # Thursday
-    [
-        ('francais', 8, 30, 60),
-        ('math', 9, 30, 60),
-        ('francais', 10, 30, 60),
-        ('math', 13, 30, 60),
-        ('hist/geo', 14, 30, 60),
-        ('eps', 15, 30, 120),
-    ],
-    # Friday
-    [
-        ('hist/geo', 8, 30, 60),
-        ('svt', 9, 30, 60),
-        ('math', 10, 30, 60),
-        ('anglais', 13, 30, 60),
-        ('math', 14, 30, 60),
-        ('eps', 15, 30, 60),
-    ],
-]
-
-week_6f_b = list(week_6f_a)
-
-week_6f_b[3] = [
-    ('svt', 8, 30, 60),
-    ('techno', 9, 30, 60),
-    ('svt', 10, 30, 60),
-    ('math', 13, 30, 60),
-    ('hist/geo', 14, 30, 60),
-    ('eps', 15, 30, 120),
-]
-
-week_6f_b[4] = [
-    ('hist/geo', 8, 30, 60),
-    ('francais', 9, 30, 60),
-    ('math', 10, 30, 60),
-    ('anglais', 13, 30, 60),
-    ('math', 14, 30, 60),
-    ('eps', 15, 30, 60),
-]
-
-schedule_6f = [
-    week_6f_a,
-    week_6f_b,
-]
-
-week_6a_a = [
-    # Monday
-    [
-        ('eps', 8, 30, 120),
-        ('math', 10, 30, 60),
-        ('francais', 11, 30, 60),
-        ('dessin', 13, 30, 60),
-        ('anglais', 14, 30, 60),
-        ('musique', 15, 30, 60),
-    ],
-    # Tuesday
-    [
-        ('hist/geo', 8, 30, 60),
-        ('francais', 9, 30, 120),
-        ('math', 11, 30, 60),
-        ('anglais', 13, 30, 60),
-    ],
-    # Wednesday
-    [
-        ('eps', 8, 30, 120),
-        ('anglais', 10, 30, 60),
-    ],
-    # Thursday
-    [
-        ('techno', 10, 30, 60),
-        ('francais', 11, 30, 60),
-        ('hist/geo', 13, 30, 60),
-        ('anglais', 14, 30, 60),
-        ('math', 15, 30, 60),
-    ],
-    # Friday
-    [
-        ('hist/geo', 9, 30, 60),
-        ('physique', 10, 30, 60),
-        ('svt', 11, 30, 60),
-        ('techno', 13, 30, 60),
-        ('svt', 14, 30, 60),
-        ('math', 15, 30, 60),
-    ],
-]
-
-week_6a_b = list(week_6a_a)
-
-# Monday
-week_6a_b[0] = [
-    ('eps', 8, 30, 120),
-    ('hist/geo', 10, 30, 60),
-    ('francais', 11, 30, 60),
-    ('dessin', 13, 30, 60),
-    ('anglais', 14, 30, 60),
-    ('musique', 15, 30, 60),
-]
-
-# Thursday
-week_6a_b[3] = [
-    ('math', 10, 30, 60),
-    ('francais', 11, 30, 60),
-    ('hist/geo', 13, 30, 60),
-    ('anglais', 14, 30, 60),
-    ('math', 15, 30, 60),
-]
-
-# Friday
-week_6a_b[4] = [
-    ('math', 9, 30, 60),
-    ('physique', 10, 30, 60),
-    ('svt', 11, 30, 60),
-    ('francais', 13, 30, 60),
-    ('techno', 14, 30, 60),
-    ('math', 15, 30, 60),
-]
-
-schedule_6a = [
-    week_6a_a,
-    week_6a_b,
-]
-
-common_morning_bus = [
-    ('roseraie', 7, 51, 1),
-    ('roseraie', 8, 57, 1),
-    # ('place du clos', 8, 26, 1),
-    # ('place du clos', 9, 12, 1),
-]
-
-common_afternoon_bus = [
-    ('place du clos', 15, 42, 1),
-    ('place du clos', 16, 42, 1),
-    ('place du clos', 17, 39, 1),
-]
-
-week_bus = [
-    common_morning_bus + common_afternoon_bus,
-    common_morning_bus + common_afternoon_bus,
-    common_morning_bus + [('place du clos', 12, 38, 1)],
-    common_morning_bus + common_afternoon_bus + [('place du clos', 16, 45, 1)],
-    common_morning_bus + common_afternoon_bus + [('place du clos', 16, 45, 1)],
-]
-
-schedule_bus = [week_bus, week_bus]
-
-def generate_week_events(planning: list, target: Calendar, monday: arrow.Arrow):
-    '''
-    Add all events in planning into specified calendar
-    '''
-    # Iterate over days of the week
-    for day_number, courses in enumerate(planning):
-        # Iterate over courses of the day
-        for current_course in courses:
-            start_time = arrow.get(
-                datetime.utcfromtimestamp(monday.timestamp) + timedelta(
-                    days=day_number,
-                    hours=current_course[1] - 2,    # TODO fix this TZ issue
-                    minutes=current_course[2],
-                )
-            )
-            target.events.add(
-                Event(
-                    name=current_course[0],
-                    begin=start_time,
-                    duration={'minutes': current_course[3]}
-                )
-            )
-
-def render_calendar(
-        planning: list,
-        start_monday: arrow.Arrow,
-        end_monday: arrow.Arrow,
-        holidays_calendar: Calendar
-    ) -> Calendar:
-    '''
-    Returns a calendar populated with provided events
-    '''
-
     result = Calendar()
-    week_type = 0
+    result.add('version', '2.0')
+    result.add('calscale', 'GREGORIAN')
+    result.add('X-WR-CALNAME', 'Bus scolaires')
 
-    for current_monday in arrow.Arrow.range('week', start_monday, end_monday):
-        # Holidays are skipped :)
-        if is_during_holidays(current_monday, calendar=holidays_calendar):
-            pass
-        else:
-            generate_week_events(
-                monday=current_monday,
-                target=result,
-                planning=planning[week_type],
+    # school_weeks = [str(x) for x in get_school_weeks()]
+    school_weeks = get_school_weeks()
+
+    for event in BUS_CALENDAR:
+        calendar_event = Event()
+        for key, value in event.items():
+            if key in ['start', 'end']:
+                # If we use relative datetime, calculate absolute value
+                hours, minutes = value
+                value = BUS_CALENDAR_START + timedelta(hours=hours, minutes=minutes)
+                calendar_event.add(f'dt{key}', value)
+            elif key == 'rrule':
+                value.update(dict(
+                    byweekno=school_weeks,
+                    freq='yearly',
+                    until=BUS_CALENDAR_END,
+                ))
+                calendar_event.add(key, value)
+            else:
+                calendar_event.add(key, value)
+
+        result.add_component(calendar_event)
+
+    return result
+
+def get_holidays_weeks() -> list:
+    '''
+    Return a list of all holidays weeks number
+    '''
+    result = list()
+
+    holidays_file = ('calendrier_scolaire_20172018_et_20182019.ics')
+    with open(holidays_file) as file_descriptor:
+        data = file_descriptor.read()
+
+    holidays_calendar = Calendar.from_ical(data)
+    for event in holidays_calendar.walk(name='VEVENT'):
+        # Get all holidays for Zone C:
+        if all([
+            'Vacances' in event.get('summary'),
+            'Zone A' not in event.get('summary'),
+            'Zone B' not in event.get('summary'),
+        ]):
+            dt_start = event.get('dtstart').dt.replace(
+                tzinfo=pytz.timezone('Europe/Paris')
             )
 
-            # Change planning for next week
-            week_type = (week_type + 1) % 2
+            dt_end = event.get('dtend').dt.replace(
+                tzinfo=pytz.timezone('Europe/Paris')
+            )
+
+            # Summer holidays has no duration
+            if dt_start == dt_end:
+                continue
+
+            # Official calendar starts holidays at the end of the week
+            dt_start = dt_start + relativedelta(weekday=MO(1))
+
+            # Official calendars has both calendar and scholar years
+            if dt_start < SCHOOL_CALENDAR_START.replace(tzinfo=pytz.timezone('Europe/Paris')):
+                continue
+
+            if dt_end > SCHOOL_CALENDAR_END.replace(tzinfo=pytz.timezone('Europe/Paris')):
+                continue
+
+            start_week = dt_start.isocalendar()[1]
+            end_week = dt_end.isocalendar()[1]
+
+            # if 'Vacances de Noël' == event['summary']:
+            if start_week > end_week:
+                last_yearly_week = date(dt_start.isocalendar()[0], 12, 28).isocalendar()[1]
+
+                holidays_weeks = list()
+                holidays_weeks.extend(range(start_week, last_yearly_week+1))
+                holidays_weeks.extend(range(1, end_week))
+            else:
+                holidays_weeks = range(start_week, end_week)
+
+
+            result.extend(holidays_weeks)
+
+    return result
+
+def get_school_weeks() -> list:
+    '''
+    List all week numbers of school
+    '''
+    result = list()
+    holidays_weeks = get_holidays_weeks()
+
+    school_start_week = SCHOOL_CALENDAR_START.isocalendar()[1]
+    school_end_week = SCHOOL_CALENDAR_END.isocalendar()[1]
+    last_yearly_week = date(SCHOOL_CALENDAR_START.isocalendar()[0], 12, 28).isocalendar()[1]
+
+    school_weeks = list()
+    school_weeks.extend(range(school_start_week, last_yearly_week+1))
+    school_weeks.extend(range(1, school_end_week))
+
+    result = sorted(list(set(school_weeks) - set(holidays_weeks)))
 
     return result
 
 if __name__ == '__main__':
-    first_school_monday = arrow.get('2018-09-03')
-    last_school_monday = arrow.get('2019-07-01')
-
-    holidays_file = ('calendrier_scolaire_20172018_et_20182019.ics')
-    with open(holidays_file) as fd:
-        holidays_cal = Calendar(fd.read())
-
-    for current_planning, output_file in [
-            (schedule_6a, 'calendrier_6a.ics'),
-            (schedule_6f, 'calendrier_6f.ics'),
-            (schedule_bus, 'calendrier_bus.ics')
-    ]:
-        new_calendar = render_calendar(
-            planning=current_planning,
-            start_monday=first_school_monday,
-            end_monday=last_school_monday,
-            holidays_calendar=holidays_cal
-        )
-
-        print(f'Writing {output_file}')
-        with open(output_file, 'w') as fd:
-            fd.writelines(new_calendar)
+    generate_school_bus_calendar()
