@@ -56,6 +56,13 @@ SCHOOL_6A_CALENDAR = [
         rrule=dict(byday=['MO']),
         week_type='b'
     ),
+    dict(
+        summary='HIST. GEO. EN. MOR. CIV.',
+        location='a5',
+        duration=timedelta(hours=1),
+        start=(8, 30),
+        rrule=dict(byday=['TU']),
+    ),
 ]
 
 BUS_CALENDAR = [
@@ -142,7 +149,8 @@ def generate_school_calendar(
     result.add('calscale', 'GREGORIAN')
     result.add('x-wr-timezone', TIMEZONE)
     if title:
-        result.add('X-WR-CALNAME', title)
+        result.add('x-wr-calname', title)
+        result.add('x-wr-calname', f'Agenda pour la {title}')
 
     weeks_number_type = dict(
         a=[number for index, number in enumerate(weeks_number) if index % 2 == 0],
