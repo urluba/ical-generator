@@ -254,7 +254,7 @@ SCHOOL_6F_CALENDAR = [
         location='C1',
         duration=timedelta(hours=1),
         start=(14, 30),
-        rrule=dict(byday=['MO'],until=datetime(2018, 10, 8)),
+        rrule=dict(byday=['MO'],until=datetime(2018, 10, 15)),
     ),
     dict(
         summary='Français',
