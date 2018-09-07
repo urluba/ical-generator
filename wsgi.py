@@ -1,7 +1,8 @@
 import datetime
 from dateutil.relativedelta import relativedelta, MO
 from flask import Flask, current_app, abort, make_response
-from ical import generate_school_bus_calendar, get_school_weeks, generate_6a_calendar
+from ical import generate_school_bus_calendar, get_school_weeks
+from ical import generate_6f_calendar, generate_6a_calendar
 
 def create_app() -> Flask:
     ''' Return a Flask application '''
@@ -28,8 +29,8 @@ def get_ical(planning_name: str) -> str:
         result = generate_school_bus_calendar(current_app.config['school_weeks'])
     elif planning_name == '6a':
         result = generate_6a_calendar(current_app.config['school_weeks'])
-    # elif planning_name == '6f':
-    #     from ical import schedule_6f as requested_planning
+    elif planning_name == '6f':
+        result = generate_6f_calendar(current_app.config['school_weeks'])
     else:
         abort(404)
 

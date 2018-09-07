@@ -220,6 +220,228 @@ SCHOOL_6A_CALENDAR = [
     ),
 ]
 
+SCHOOL_6F_CALENDAR = [
+    dict(
+        summary='EPS',
+        location='',
+        duration=timedelta(hours=1),
+        start=(9, 30),
+        rrule=dict(byday=['MO']),
+    ),
+    dict(
+        summary='TECHNOLOGIE',
+        location='A6',
+        duration=timedelta(hours=1),
+        start=(10, 30),
+        rrule=dict(byday=['MO']),
+    ),
+    dict(
+        summary='ANGLAIS',
+        location='B6',
+        duration=timedelta(hours=1),
+        start=(11, 30),
+        rrule=dict(byday=['MO']),
+    ),
+    dict(
+        summary='HIST. GEO. EN. MOR. CIV.',
+        location='A3',
+        duration=timedelta(hours=1),
+        start=(13, 30),
+        rrule=dict(byday=['MO']),
+    ),
+    # dict(
+    #     summary='Français',
+    #     location='C1',
+    #     duration=timedelta(hours=1),
+    #     start=(14, 30),
+    #     rrule=dict(byday=['MO']),
+    #     # rrulend
+    # ),
+    dict(
+        summary='Français',
+        location='C1',
+        duration=timedelta(hours=1),
+        start=(9, 30, 1),
+        rrule=dict(byday=['TU']),
+    ),
+    dict(
+        summary='Mathématiques',
+        location='C5',
+        duration=timedelta(hours=1),
+        start=(10, 30, 1),
+        rrule=dict(byday=['TU']),
+    ),
+    dict(
+        summary='A. PLASTIQUES',
+        location='A7',
+        duration=timedelta(hours=1),
+        start=(13, 30, 1),
+        rrule=dict(byday=['TU']),
+    ),
+    dict(
+        summary='Français',
+        location='C1',
+        duration=timedelta(hours=1),
+        start=(14, 30, 1),
+        rrule=dict(byday=['TU']),
+    ),
+    dict(
+        summary='ANGLAIS',
+        location='B6',
+        duration=timedelta(hours=1),
+        start=(15, 30, 1),
+        rrule=dict(byday=['TU']),
+    ),
+    dict(
+        summary='ANGLAIS',
+        location='',
+        duration=timedelta(hours=1),
+        start=(8, 30, 2),
+        rrule=dict(byday=['WE']),
+    ),
+    dict(
+        summary='PHYSIQUE-CH',
+        location='D10',
+        duration=timedelta(hours=1),
+        start=(9, 30, 2),
+        rrule=dict(byday=['WE']),
+    ),
+    dict(
+        summary='ED MUSICALE',
+        location='D1',
+        duration=timedelta(hours=1),
+        start=(10, 30, 2),
+        rrule=dict(byday=['WE']),
+    ),
+    dict(
+        summary='Français',
+        location='C1',
+        duration=timedelta(hours=1),
+        start=(11, 30, 2),
+        rrule=dict(byday=['WE']),
+    ),
+    dict(
+        summary='Français',
+        location='C1',
+        duration=timedelta(hours=1),
+        start=(8, 30, 3),
+        rrule=dict(byday=['TH']),
+        week_type='a'
+    ),
+    dict(
+        summary='SVT',
+        location='D8',
+        duration=timedelta(hours=1),
+        start=(8, 30, 3),
+        rrule=dict(byday=['TH']),
+        week_type='b'
+    ),
+    dict(
+        summary='Mathématiques',
+        location='C5',
+        duration=timedelta(hours=1),
+        start=(9, 30, 3),
+        rrule=dict(byday=['TH']),
+        week_type='a'
+    ),
+    dict(
+        summary='TECHNOLOGIE',
+        location='A6',
+        duration=timedelta(hours=1),
+        start=(9, 30, 3),
+        rrule=dict(byday=['TH']),
+        week_type='b'
+    ),
+    dict(
+        summary='Français',
+        location='C1',
+        duration=timedelta(hours=1),
+        start=(10, 3, 3),
+        rrule=dict(byday=['TH']),
+        week_type='a'
+    ),
+    dict(
+        summary='SVT',
+        location='D8',
+        duration=timedelta(hours=1),
+        start=(10, 3, 3),
+        rrule=dict(byday=['TH']),
+        week_type='b'
+    ),
+    dict(
+        summary='Mathématiques',
+        location='C5',
+        duration=timedelta(hours=1),
+        start=(13, 30, 3),
+        rrule=dict(byday=['TH']),
+    ),
+    dict(
+        summary='HIST. GEO. EN. MOR. CIV.',
+        location='A3',
+        duration=timedelta(hours=1),
+        start=(14, 30, 3),
+        rrule=dict(byday=['TH']),
+    ),
+    dict(
+        summary='EPS',
+        location='',
+        duration=timedelta(hours=2),
+        start=(15, 30, 3),
+        rrule=dict(byday=['TH']),
+    ),
+    dict(
+        summary='HIST. GEO. EN. MOR. CIV.',
+        location='A3',
+        duration=timedelta(hours=1),
+        start=(8, 30, 4),
+        rrule=dict(byday=['FR']),
+    ),
+    dict(
+        summary='SVT',
+        location='D6',
+        duration=timedelta(hours=1),
+        start=(9, 30, 4),
+        rrule=dict(byday=['FR']),
+        week_type='a'
+    ),
+    dict(
+        summary='Français',
+        location='C1',
+        duration=timedelta(hours=1),
+        start=(9, 30, 4),
+        rrule=dict(byday=['FR']),
+        week_type='b'
+    ),
+    dict(
+        summary='Mathématiques',
+        location='C5',
+        duration=timedelta(hours=1),
+        start=(10, 30, 4),
+        rrule=dict(byday=['FR']),
+    ),
+    dict(
+        summary='ANGLAIS',
+        location='B6',
+        duration=timedelta(hours=1),
+        start=(13, 30, 4),
+        rrule=dict(byday=['FR']),
+    ),
+    dict(
+        summary='Mathématiques',
+        location='C5',
+        duration=timedelta(hours=1),
+        start=(14, 30, 4),
+        rrule=dict(byday=['FR']),
+    ),
+    dict(
+        summary='EPS',
+        location='',
+        duration=timedelta(hours=1),
+        start=(15, 30, 4),
+        rrule=dict(byday=['FR']),
+    ),
+]
+
 BUS_CALENDAR = [
     dict(
         summary='roseraie',
@@ -291,6 +513,13 @@ def generate_6a_calendar(weeks_number: list) -> Calendar:
     '''
     return generate_school_calendar(
         weeks_number, SCHOOL_6A_CALENDAR, '6A'
+    )
+
+def generate_6f_calendar(weeks_number: list) -> Calendar:
+    '''
+    '''
+    return generate_school_calendar(
+        weeks_number, SCHOOL_6F_CALENDAR, '6F'
     )
 
 def generate_school_calendar(
