@@ -42,7 +42,7 @@ SCHOOL_6A_CALENDAR = [
     ),
     dict(
         summary='mathématiques',
-        location='c5',
+        location='C5',
         duration=timedelta(hours=1),
         start=(10, 30),
         rrule=dict(byday=['MO']),
@@ -50,7 +50,7 @@ SCHOOL_6A_CALENDAR = [
     ),
     dict(
         summary='HIST. GEO. EN. MOR. CIV.',
-        location='a5',
+        location='A5',
         duration=timedelta(hours=1),
         start=(10, 30),
         rrule=dict(byday=['MO']),
@@ -62,6 +62,41 @@ SCHOOL_6A_CALENDAR = [
         duration=timedelta(hours=1),
         start=(8, 30),
         rrule=dict(byday=['TU']),
+    ),
+    dict(
+        summary='Français',
+        location='D5',
+        duration=timedelta(hours=2),
+        start=(9, 30),
+        rrule=dict(byday=['TU']),
+    ),
+    dict(
+        summary='mathématiques',
+        location='C5',
+        duration=timedelta(hours=1),
+        start=(11, 30),
+        rrule=dict(byday=['TU']),
+    ),
+    dict(
+        summary='ANGLAIS',
+        location='B5',
+        duration=timedelta(hours=1),
+        start=(13, 30),
+        rrule=dict(byday=['TU']),
+    ),
+    dict(
+        summary='EPS',
+        location='',
+        duration=timedelta(hours=2),
+        start=(8, 30),
+        rrule=dict(byday=['WE']),
+    ),
+    dict(
+        summary='ANGLAIS',
+        location='B6',
+        duration=timedelta(hours=1),
+        start=(10, 30),
+        rrule=dict(byday=['WE']),
     ),
 ]
 
@@ -150,7 +185,7 @@ def generate_school_calendar(
     result.add('x-wr-timezone', TIMEZONE)
     if title:
         result.add('x-wr-calname', title)
-        result.add('x-wr-calname', f'Agenda pour la {title}')
+        result.add('x-wr-caldesc', f'Agenda pour la {title}')
 
     weeks_number_type = dict(
         a=[number for index, number in enumerate(weeks_number) if index % 2 == 0],
