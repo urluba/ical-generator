@@ -3,6 +3,8 @@ from dateutil.relativedelta import relativedelta, MO, SU
 from icalendar import Calendar, Event
 import pytz
 
+
+TIMEZONE = pytz.timezone('Europe/Paris')
 BUS_CALENDAR_START = datetime(2018, 9, 3)
 BUS_CALENDAR_END = datetime(2019, 7, 8)
 
@@ -138,6 +140,7 @@ def generate_school_calendar(
     result = Calendar()
     result.add('version', '2.0')
     result.add('calscale', 'GREGORIAN')
+    result.add('x-wr-timezone', TIMEZONE)
     if title:
         result.add('X-WR-CALNAME', title)
 
@@ -179,6 +182,8 @@ def generate_school_calendar(
 
         result.add_component(calendar_event)
 
+    with open('6a.ics', 'wb') as file_descriptor:
+        data = file_descriptor.write(result.to_ical())
 
     return result
 
