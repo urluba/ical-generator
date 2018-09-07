@@ -249,14 +249,13 @@ SCHOOL_6F_CALENDAR = [
         start=(13, 30),
         rrule=dict(byday=['MO']),
     ),
-    # dict(
-    #     summary='Français',
-    #     location='C1',
-    #     duration=timedelta(hours=1),
-    #     start=(14, 30),
-    #     rrule=dict(byday=['MO']),
-    #     # rrulend
-    # ),
+    dict(
+        summary='Français',
+        location='C1',
+        duration=timedelta(hours=1),
+        start=(14, 30),
+        rrule=dict(byday=['MO'],until=datetime(2018, 10, 8)),
+    ),
     dict(
         summary='Français',
         location='C1',
@@ -560,10 +559,6 @@ def generate_school_calendar(
             elif key == 'week_type':
                 week_type = value
             elif key == 'rrule':
-                value.update(dict(
-                    freq='yearly',
-                    until=SCHOOL_CALENDAR_END,
-                ))
                 rrule = value
             else:
                 calendar_event.add(key, value)
@@ -573,8 +568,11 @@ def generate_school_calendar(
                 week_type, weeks_number
             )
 
+            until = rrule.get('until', SCHOOL_CALENDAR_END)
             rrule.update(dict(
                 byweekno=current_weeks_number,
+                freq='yearly',
+                until=until,
             ))
             calendar_event.add('rrule', rrule)
 
