@@ -588,7 +588,9 @@ def generate_school_bus_calendar(weeks_number: list) -> Calendar:
     result = Calendar()
     result.add('version', '2.0')
     result.add('calscale', 'GREGORIAN')
-    result.add('X-WR-CALNAME', 'Bus scolaires')
+    result.add('x-wr-timezone', TIMEZONE)
+    result.add('x-wr-calname', 'Bus scolaires')
+    result.add('x-wr-caldesc', 'Bus scolaires')
 
     for event in BUS_CALENDAR:
         calendar_event = Event()
