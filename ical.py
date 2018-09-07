@@ -9,6 +9,53 @@ BUS_CALENDAR_END = datetime(2019, 7, 8)
 SCHOOL_CALENDAR_START = BUS_CALENDAR_START
 SCHOOL_CALENDAR_END = BUS_CALENDAR_END
 
+SCHOOL_6A_CALENDAR = [
+    dict(
+        summary='A. PLASTIQUES',
+        location='A7',
+        duration=timedelta(hours=1),
+        start=(13, 30),
+        rrule=dict(byday=['MO']),
+    ),
+    dict(
+        summary='ANGLAIS',
+        location='B6',
+        duration=timedelta(hours=1),
+        start=(14, 30),
+        rrule=dict(byday=['MO']),
+    ),
+    dict(
+        summary='ED MUSICALE',
+        location='D2',
+        duration=timedelta(hours=1),
+        start=(15, 30),
+        rrule=dict(byday=['MO']),
+    ),
+    dict(
+        summary='EPS',
+        location='',
+        duration=timedelta(hours=2),
+        start=(8, 30),
+        rrule=dict(byday=['MO']),
+    ),
+    dict(
+        summary='mathématiques',
+        location='c5',
+        duration=timedelta(hours=1),
+        start=(10, 30),
+        rrule=dict(byday=['MO']),
+        week_type='a'
+    ),
+    dict(
+        summary='HIST. GEO. EN. MOR. CIV.',
+        location='a5',
+        duration=timedelta(hours=1),
+        start=(10, 30),
+        rrule=dict(byday=['MO']),
+        week_type='b'
+    ),
+]
+
 BUS_CALENDAR = [
     dict(
         summary='roseraie',
@@ -75,7 +122,68 @@ BUS_CALENDAR = [
     ),
 ]
 
-def generate_school_bus_calendar() -> Calendar:
+def generate_6a_calendar(weeks_number: list) -> Calendar:
+    '''
+    '''
+    return generate_school_calendar(
+        weeks_number, SCHOOL_6A_CALENDAR, '6A'
+    )
+
+def generate_school_calendar(
+    weeks_number: list, school_planning: dict, title: str = None,
+    ) -> Calendar:
+    '''
+    Return calendar for 6a
+    '''
+    result = Calendar()
+    result.add('version', '2.0')
+    result.add('calscale', 'GREGORIAN')
+    if title:
+        result.add('X-WR-CALNAME', title)
+
+    weeks_number_type = dict(
+        a=[number for index, number in enumerate(weeks_number) if index % 2 == 0],
+        b=[number for index, number in enumerate(weeks_number) if index % 2 == 1],
+    )
+
+    for event in school_planning:
+        calendar_event = Event()
+        week_type = 'always'
+        rrule = None
+        for key, value in event.items():
+            if key in ['start', 'end']:
+                # If we use relative datetime, calculate absolute value
+                hours, minutes = value
+                value = SCHOOL_CALENDAR_START + timedelta(hours=hours, minutes=minutes)
+                calendar_event.add(f'dt{key}', value)
+            elif key == 'week_type':
+                week_type = value
+            elif key == 'rrule':
+                value.update(dict(
+                    freq='yearly',
+                    until=SCHOOL_CALENDAR_END,
+                ))
+                rrule = value
+            else:
+                calendar_event.add(key, value)
+
+        if rrule:
+            current_weeks_number = weeks_number_type.get(
+                week_type, weeks_number
+            )
+
+            rrule.update(dict(
+                byweekno=current_weeks_number,
+            ))
+            calendar_event.add('rrule', rrule)
+
+        result.add_component(calendar_event)
+
+
+    return result
+
+
+def generate_school_bus_calendar(weeks_number: list) -> Calendar:
     '''
     Return a calendar for school bus
     '''
@@ -83,9 +191,6 @@ def generate_school_bus_calendar() -> Calendar:
     result.add('version', '2.0')
     result.add('calscale', 'GREGORIAN')
     result.add('X-WR-CALNAME', 'Bus scolaires')
-
-    # school_weeks = [str(x) for x in get_school_weeks()]
-    school_weeks = get_school_weeks()
 
     for event in BUS_CALENDAR:
         calendar_event = Event()
@@ -97,7 +202,7 @@ def generate_school_bus_calendar() -> Calendar:
                 calendar_event.add(f'dt{key}', value)
             elif key == 'rrule':
                 value.update(dict(
-                    byweekno=school_weeks,
+                    byweekno=weeks_number,
                     freq='yearly',
                     until=BUS_CALENDAR_END,
                 ))
@@ -187,4 +292,4 @@ def get_school_weeks() -> list:
     return result
 
 if __name__ == '__main__':
-    generate_school_bus_calendar()
+    generate_school_bus_calendar(get_school_weeks())
