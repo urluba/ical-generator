@@ -25,6 +25,7 @@ def get_ical(planning_name: str) -> str:
     '''
     Return the bus calendar for current year
     '''
+
     if planning_name == 'bus':
         result = generate_school_bus_calendar(current_app.config['school_weeks'])
     elif planning_name == '6a':
