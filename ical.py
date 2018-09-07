@@ -67,49 +67,49 @@ SCHOOL_6A_CALENDAR = [
         summary='HIST. GEO. EN. MOR. CIV.',
         location='a5',
         duration=timedelta(hours=1),
-        start=(8, 30),
+        start=(8, 30, 1),
         rrule=dict(byday=['TU']),
     ),
     dict(
         summary='Français',
         location='D5',
         duration=timedelta(hours=2),
-        start=(9, 30),
+        start=(9, 30, 1),
         rrule=dict(byday=['TU']),
     ),
     dict(
         summary='Mathématiques',
         location='C5',
         duration=timedelta(hours=1),
-        start=(11, 30),
+        start=(11, 30, 1),
         rrule=dict(byday=['TU']),
     ),
     dict(
         summary='ANGLAIS',
         location='B5',
         duration=timedelta(hours=1),
-        start=(13, 30),
+        start=(13, 30, 1),
         rrule=dict(byday=['TU']),
     ),
     dict(
         summary='EPS',
         location='',
         duration=timedelta(hours=2),
-        start=(8, 30),
+        start=(8, 30, 2),
         rrule=dict(byday=['WE']),
     ),
     dict(
         summary='ANGLAIS',
         location='B6',
         duration=timedelta(hours=1),
-        start=(10, 30),
+        start=(10, 30, 2),
         rrule=dict(byday=['WE']),
     ),
     dict(
         summary='TECHNOLOGIE',
         location='A6',
         duration=timedelta(hours=1),
-        start=(10, 30),
+        start=(10, 30, 3),
         rrule=dict(byday=['TH']),
         week_type='a'
     ),
@@ -117,7 +117,7 @@ SCHOOL_6A_CALENDAR = [
         summary='Mathématiques',
         location='C5',
         duration=timedelta(hours=1),
-        start=(10, 30),
+        start=(10, 30, 3),
         rrule=dict(byday=['TH']),
         week_type='b'
     ),
@@ -125,35 +125,35 @@ SCHOOL_6A_CALENDAR = [
         summary='Français',
         location='D5',
         duration=timedelta(hours=1),
-        start=(11, 30),
+        start=(11, 30, 3),
         rrule=dict(byday=['TH']),
     ),
     dict(
         summary='HIST. GEO. EN. MOR. CIV.',
         location='A3',
         duration=timedelta(hours=1),
-        start=(13, 30),
+        start=(13, 3, 3),
         rrule=dict(byday=['TH']),
     ),
     dict(
         summary='ANGLAIS',
         location='B4',
         duration=timedelta(hours=1),
-        start=(14, 30),
+        start=(14, 30, 3),
         rrule=dict(byday=['TH']),
     ),
     dict(
         summary='Mathématiques',
         location='C5',
         duration=timedelta(hours=1),
-        start=(15, 30),
+        start=(15, 30, 3),
         rrule=dict(byday=['TH']),
     ),
     dict(
         summary='HIST. GEO. EN. MOR. CIV.',
         location='A3',
         duration=timedelta(hours=1),
-        start=(9, 30),
+        start=(9, 30, 4),
         rrule=dict(byday=['FR']),
         week_type='a'
     ),
@@ -161,7 +161,7 @@ SCHOOL_6A_CALENDAR = [
         summary='Mathématiques',
         location='C5',
         duration=timedelta(hours=1),
-        start=(9, 30),
+        start=(9, 30, 4),
         rrule=dict(byday=['FR']),
         week_type='b'
     ),
@@ -169,21 +169,21 @@ SCHOOL_6A_CALENDAR = [
         summary='PHYSIQUE-CHIMIE',
         location='',
         duration=timedelta(hours=1),
-        start=(10, 30),
+        start=(10, 30, 4),
         rrule=dict(byday=['FR']),
     ),
     dict(
         summary='SVT',
         location='D8',
         duration=timedelta(hours=1),
-        start=(11, 30),
+        start=(11, 30, 4),
         rrule=dict(byday=['FR']),
     ),
     dict(
         summary='TECHNOLOGIE',
         location='A6',
         duration=timedelta(hours=1),
-        start=(13, 30),
+        start=(13, 30, 4),
         rrule=dict(byday=['FR']),
         week_type='a'
     ),
@@ -191,7 +191,7 @@ SCHOOL_6A_CALENDAR = [
         summary='SVT',
         location='D8',
         duration=timedelta(hours=1),
-        start=(14, 30),
+        start=(14, 30, 4),
         rrule=dict(byday=['FR']),
         week_type='a'
     ),
@@ -199,7 +199,7 @@ SCHOOL_6A_CALENDAR = [
         summary='Français',
         location='D5',
         duration=timedelta(hours=1),
-        start=(13, 30),
+        start=(13, 30, 4),
         rrule=dict(byday=['FR']),
         week_type='b'
     ),
@@ -207,7 +207,7 @@ SCHOOL_6A_CALENDAR = [
         summary='TECHNOLOGIE',
         location='A6',
         duration=timedelta(hours=1),
-        start=(14, 30),
+        start=(14, 30, 4),
         rrule=dict(byday=['FR']),
         week_type='b'
     ),
@@ -215,7 +215,7 @@ SCHOOL_6A_CALENDAR = [
         summary='Mathématiques',
         location='C5',
         duration=timedelta(hours=1),
-        start=(15, 30),
+        start=(15, 30, 4),
         rrule=dict(byday=['FR']),
     ),
 ]
@@ -319,9 +319,15 @@ def generate_school_calendar(
         for key, value in event.items():
             if key in ['start', 'end']:
                 # If we use relative datetime, calculate absolute value
-                hours, minutes = value
-                value = SCHOOL_CALENDAR_START + timedelta(hours=hours, minutes=minutes)
-                calendar_event.add(f'dt{key}', value)
+                if len (value) == 2:
+                    hours, minutes = value
+                    current_value = SCHOOL_CALENDAR_START + timedelta(hours=hours, minutes=minutes)
+                elif len (value) == 3:
+                    hours, minutes, days = value
+                    current_value = SCHOOL_CALENDAR_START + timedelta(hours=hours, minutes=minutes, days=days)
+                else:
+                    raise ValueError
+                calendar_event.add(f'dt{key}', current_value)
             elif key == 'week_type':
                 week_type = value
             elif key == 'rrule':
