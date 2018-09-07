@@ -356,7 +356,7 @@ SCHOOL_6F_CALENDAR = [
         summary='Français',
         location='C1',
         duration=timedelta(hours=1),
-        start=(10, 3, 3),
+        start=(10, 30, 3),
         rrule=dict(byday=['TH']),
         week_type='a'
     ),
@@ -364,7 +364,7 @@ SCHOOL_6F_CALENDAR = [
         summary='SVT',
         location='D8',
         duration=timedelta(hours=1),
-        start=(10, 3, 3),
+        start=(10, 30, 3),
         rrule=dict(byday=['TH']),
         week_type='b'
     ),
