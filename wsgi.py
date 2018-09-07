@@ -38,4 +38,4 @@ def get_ical(planning_name: str) -> str:
     response = make_response(result.to_ical())
     response.headers['Content-Type'] = 'text/calendar; charset=utf-8'
 
-    return result.to_ical()
+    return response

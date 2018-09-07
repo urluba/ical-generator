@@ -578,9 +578,6 @@ def generate_school_calendar(
 
         result.add_component(calendar_event)
 
-    # with open('6a.ics', 'wb') as file_descriptor:
-    #     data = file_descriptor.write(result.to_ical())
-
     return result
 
 
