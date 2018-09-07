@@ -687,7 +687,7 @@ def get_school_weeks() -> list:
     school_weeks.extend(range(school_start_week, last_yearly_week+1))
     school_weeks.extend(range(1, school_end_week))
 
-    result = sorted(list(set(school_weeks) - set(holidays_weeks)))
+    result = list(set(school_weeks) - set(holidays_weeks))
 
     return result
 

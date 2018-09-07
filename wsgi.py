@@ -7,12 +7,6 @@ from ical import generate_6f_calendar, generate_6a_calendar
 def create_app() -> Flask:
     ''' Return a Flask application '''
 
-    # Get these from official ICS ?? .env ?
-    # first_monday = arrow.get('2018-09-03')
-    # last_monday = arrow.get('2019-07-01')
-    # holidays_file = ('calendrier_scolaire_20172018_et_20182019.ics')
-
-
     app = Flask(__name__)
     app.config['school_weeks'] = get_school_weeks()
 
@@ -35,7 +29,7 @@ def get_ical(planning_name: str) -> str:
     else:
         abort(404)
 
-    response = make_response(result.to_ical().decode().replace('\r\n ', ''))
+    response = make_response(result.to_ical().decode().replace('\r\n ', '').replace('\r\n', '\n'))
     response.headers['Content-Type'] = 'text/calendar; charset=utf-8'
 
     return response
