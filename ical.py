@@ -49,6 +49,13 @@ SCHOOL_6A_CALENDAR = [
         week_type='a'
     ),
     dict(
+        summary='Français',
+        location='D5',
+        duration=timedelta(hours=1),
+        start=(11, 30),
+        rrule=dict(byday=['MO']),
+    ),
+    dict(
         summary='HIST. GEO. EN. MOR. CIV.',
         location='A5',
         duration=timedelta(hours=1),
@@ -186,6 +193,7 @@ SCHOOL_6A_CALENDAR = [
         duration=timedelta(hours=1),
         start=(14, 30),
         rrule=dict(byday=['FR']),
+        week_type='a'
     ),
     dict(
         summary='Français',
