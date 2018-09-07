@@ -573,6 +573,7 @@ def generate_school_calendar(
                 byweekno=current_weeks_number,
                 freq='yearly',
                 until=until,
+                TZID=TIMEZONE
             ))
             calendar_event.add('rrule', rrule)
 
@@ -605,6 +606,7 @@ def generate_school_bus_calendar(weeks_number: list) -> Calendar:
                     byweekno=weeks_number,
                     freq='yearly',
                     until=BUS_CALENDAR_END,
+                    TZID=TIMEZONE
                 ))
                 calendar_event.add(key, value)
             else:
