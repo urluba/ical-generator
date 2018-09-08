@@ -602,7 +602,7 @@ def generate_school_bus_calendar(weeks_number: list) -> Calendar:
                 calendar_event.add(f'dt{key}', value)
             elif key == 'rrule':
                 value.update(dict(
-                    # byweekno=weeks_number,
+                    byweekno=weeks_number,
                     freq='yearly',
                     until=BUS_CALENDAR_END,
                 ))
@@ -689,6 +689,7 @@ def get_school_weeks() -> list:
 
     result = list(set(school_weeks) - set(holidays_weeks))
 
+    return [36,37]
     return result
 
 if __name__ == '__main__':
