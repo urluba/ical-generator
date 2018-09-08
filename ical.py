@@ -5,8 +5,8 @@ import pytz
 import uuid
 
 TIMEZONE = pytz.timezone('Europe/Paris')
-BUS_CALENDAR_START = datetime(2018, 9, 3)
-BUS_CALENDAR_END = datetime(2019, 7, 8)
+BUS_CALENDAR_START = datetime(2018, 9, 3, 0, 0, 0, 0, pytz.utc)
+BUS_CALENDAR_END = datetime(2019, 7, 8, 0, 0, 0, 0, pytz.utc)
 
 SCHOOL_CALENDAR_START = BUS_CALENDAR_START
 SCHOOL_CALENDAR_END = BUS_CALENDAR_END
@@ -451,60 +451,60 @@ BUS_CALENDAR = [
             byday=['MO', 'TU', 'WE', 'TH', 'FR'],
         )
     ),
-    dict(
-        summary='roseraie',
-        start=(8, 57),
-        duration=timedelta(minutes=1),
-        location='roseraie',
-        rrule=dict(
-            byday=['MO', 'TU', 'WE', 'TH', 'FR'],
-        )
-    ),
-    dict(
-        summary='place du clos',
-        start=(12, 38),
-        duration=timedelta(minutes=1),
-        location='place du clos',
-        rrule=dict(
-            byday=['WE'],
-        )
-    ),
-    dict(
-        summary='place du clos',
-        start=(15, 42),
-        duration=timedelta(minutes=1),
-        location='place du clos',
-        rrule=dict(
-            byday=['MO', 'TU', 'WE', 'TH', 'FR'],
-        )
-    ),
-    dict(
-        summary='place du clos',
-        start=(16, 42),
-        duration=timedelta(minutes=1),
-        location='place du clos',
-        rrule=dict(
-            byday=['MO', 'TU', 'WE', 'TH', 'FR'],
-        )
-    ),
-    dict(
-        summary='place du clos',
-        start=(17, 39),
-        duration=timedelta(minutes=1),
-        location='place du clos',
-        rrule=dict(
-            byday=['MO', 'TU', 'WE', 'TH', 'FR'],
-        )
-    ),
-    dict(
-        summary='place du clos',
-        start=(16, 45),
-        duration=timedelta(minutes=1),
-        location='place du clos',
-        rrule=dict(
-            byday=['TH', 'FR'],
-        )
-    ),
+    # dict(
+    #     summary='roseraie',
+    #     start=(8, 57),
+    #     duration=timedelta(minutes=1),
+    #     location='roseraie',
+    #     rrule=dict(
+    #         byday=['MO', 'TU', 'WE', 'TH', 'FR'],
+    #     )
+    # ),
+    # dict(
+    #     summary='place du clos',
+    #     start=(12, 38),
+    #     duration=timedelta(minutes=1),
+    #     location='place du clos',
+    #     rrule=dict(
+    #         byday=['WE'],
+    #     )
+    # ),
+    # dict(
+    #     summary='place du clos',
+    #     start=(15, 42),
+    #     duration=timedelta(minutes=1),
+    #     location='place du clos',
+    #     rrule=dict(
+    #         byday=['MO', 'TU', 'WE', 'TH', 'FR'],
+    #     )
+    # ),
+    # dict(
+    #     summary='place du clos',
+    #     start=(16, 42),
+    #     duration=timedelta(minutes=1),
+    #     location='place du clos',
+    #     rrule=dict(
+    #         byday=['MO', 'TU', 'WE', 'TH', 'FR'],
+    #     )
+    # ),
+    # dict(
+    #     summary='place du clos',
+    #     start=(17, 39),
+    #     duration=timedelta(minutes=1),
+    #     location='place du clos',
+    #     rrule=dict(
+    #         byday=['MO', 'TU', 'WE', 'TH', 'FR'],
+    #     )
+    # ),
+    # dict(
+    #     summary='place du clos',
+    #     start=(16, 45),
+    #     duration=timedelta(minutes=1),
+    #     location='place du clos',
+    #     rrule=dict(
+    #         byday=['TH', 'FR'],
+    #     )
+    # ),
 ]
 
 def generate_6a_calendar(weeks_number: list) -> Calendar:
@@ -625,7 +625,7 @@ def generate_school_bus_calendar(weeks_number: list) -> Calendar:
             calendar_event.add('uid', uuid.uuid4())
 
         if not event.get('dtstamp'):
-            calendar_event.add('dtstamp', datetime.now())
+            calendar_event.add('dtstamp', datetime.now(pytz.utc))
 
         result.add_component(calendar_event)
 
