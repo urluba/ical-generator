@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta, MO, SU
-from icalendar import Calendar, Event
+from icalendar import Calendar, Event, vDate
 import pytz
 
 
@@ -573,7 +573,6 @@ def generate_school_calendar(
                 byweekno=current_weeks_number,
                 freq='yearly',
                 until=until,
-                TZID=TIMEZONE
             ))
             calendar_event.add('rrule', rrule)
 
@@ -603,10 +602,9 @@ def generate_school_bus_calendar(weeks_number: list) -> Calendar:
                 calendar_event.add(f'dt{key}', value)
             elif key == 'rrule':
                 value.update(dict(
-                    byweekno=weeks_number,
+                    # byweekno=weeks_number,
                     freq='yearly',
                     until=BUS_CALENDAR_END,
-                    TZID=TIMEZONE
                 ))
                 calendar_event.add(key, value)
             else:
