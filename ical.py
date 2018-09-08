@@ -513,8 +513,8 @@ class Planning(object):
             start: datetime,
             end: datetime,
             frequency: str = None,
-            name: str = None,
-            description: str = None,
+            name: str = 'Calendrier',
+            description: str = 'Calendrier',
             timezone=pytz.timezone('Europe/Paris'),
             excluded_weeks: list = None,
         ):
@@ -574,11 +574,11 @@ class Planning(object):
                 else:
                     calendar_event.add(key, value)
 
-            # if self.excluded_weeks:
-            #     calendar_event.add('exrule', dict(
-            #         freq='yearly',
-            #         byweekno=self.excluded_weeks
-            #     ))
+            if self.excluded_weeks:
+                calendar_event.add('exrule', dict(
+                    freq='yearly',
+                    byweekno=self.excluded_weeks
+                ))
 
             if not event.get('uid'):
                 calendar_event.add('uid', uuid.uuid4())
@@ -721,47 +721,10 @@ def get_holidays_weeks(date_start: datetime, date_end: datetime) -> list:
 
     return sorted(result)
 
-# def get_weeks_number(start_date, end_date) -> list:
-#     '''
-#     List all week numbers of school
-#     '''
-#     result = list()
-#     # holidays_weeks = get_holidays_weeks()
-
-#     start_week = start_date.isocalendar()[1]
-#     end_week = end_date.isocalendar()[1]
-#     last_week_of_year = date(start_date.isocalendar()[0], 12, 28).isocalendar()[1]
-
-#     weeks = list()
-#     weeks.extend(range(start_week, last_week_of_year+1))
-#     weeks.extend(range(1, end_week))
-
-#     # result = list(set(weeks) - set(holidays_weeks))
-#     result = weeks
-
-#     return result
-
-# def get_school_weeks() -> list:
-#     '''
-#     List all week numbers of school
-#     '''
-#     result = list()
-#     holidays_weeks = get_holidays_weeks()
-
-#     school_start_week = SCHOOL_CALENDAR_START.isocalendar()[1]
-#     school_end_week = SCHOOL_CALENDAR_END.isocalendar()[1]
-#     last_yearly_week = date(SCHOOL_CALENDAR_START.isocalendar()[0], 12, 28).isocalendar()[1]
-
-#     school_weeks = list()
-#     school_weeks.extend(range(school_start_week, last_yearly_week+1))
-#     school_weeks.extend(range(1, school_end_week))
-
-#     result = list(set(school_weeks) - set(holidays_weeks))
-
-#     return result
-
 if __name__ == '__main__':
     bus_planning = WeeklyPlanning(
+        name='bus',
+        description='Calendrier des bus',
         events=BUS_CALENDAR,
         start=BUS_CALENDAR_START,
         end=BUS_CALENDAR_END,
