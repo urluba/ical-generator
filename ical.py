@@ -560,11 +560,11 @@ class Planning(object):
                         hour=hours,
                         minute=minutes,
                     )
-                    calendar_event.add(f'dt{key};{self.timezone}', value, encode=0)
+                    calendar_event.add(f'dt{key}', value, encode=0)
 
                 elif key == 'rrule':
                     value.update(dict(
-                        freq='weekly',
+                        freq='yearly',
                         interval=1,
                         until=self.end,
                     ))
