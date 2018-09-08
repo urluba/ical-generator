@@ -620,6 +620,9 @@ def generate_school_bus_calendar(weeks_number: list) -> Calendar:
         if not event.get('uid'):
             calendar_event.add('uid', uuid.uuid4())
 
+        if not event.get('dtstamp'):
+            calendar_event.add('dtstamp', datetime.now())
+
         result.add_component(calendar_event)
 
     return result
