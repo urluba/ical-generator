@@ -560,10 +560,8 @@ class Planning(object):
                         hour=hours,
                         minute=minutes,
                     )
+                    calendar_event.add(f'dt{key};{self.timezone}', value, encode=0)
 
-                    calendar_event.add(
-                        f'dt{key}', value, encode=0
-                    )
                 elif key == 'rrule':
                     value.update(dict(
                         freq='weekly',
@@ -588,7 +586,7 @@ class Planning(object):
                 calendar_event.add('dtstamp', vDatetime(datetime.now(pytz.utc)), encode=0)
 
             # TODO jours feries
-            calendar_event.add(f'exdate;{self.timezone}', '20181101T000000', encode=0)
+            calendar_event.add(f'exdate;{self.timezone}', '20181101T010101', encode=0)
 
             self.calendar.add_component(calendar_event)
 
