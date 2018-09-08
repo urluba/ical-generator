@@ -1,14 +1,22 @@
-import datetime
-from dateutil.relativedelta import relativedelta, MO
+from datetime import datetime, timedelta, date
 from flask import Flask, current_app, abort, make_response
-from ical import generate_school_bus_calendar, get_school_weeks
-from ical import generate_6f_calendar, generate_6a_calendar
+import pytz
+from ical import WeeklyPlanning, get_holidays_weeks
+from ical import BUS_CALENDAR
 
 def create_app() -> Flask:
     ''' Return a Flask application '''
 
+    calendars_start = datetime(2018, 9, 3, 0, 0, 0, 0, pytz.utc)
+    calendars_end = datetime(2019, 7, 8, 0, 0, 0, 0, pytz.utc)
+
     app = Flask(__name__)
-    app.config['school_weeks'] = get_school_weeks()
+    app.config['bus_planning'] = WeeklyPlanning(
+        events=BUS_CALENDAR,
+        start=calendars_start,
+        end=calendars_end,
+        excluded_weeks=get_holidays_weeks(date_start=calendars_start, date_end=calendars_end),
+    )
 
     return app
 
@@ -21,15 +29,15 @@ def get_ical(planning_name: str) -> str:
     '''
 
     if planning_name == 'bus':
-        result = generate_school_bus_calendar(current_app.config['school_weeks'])
-    elif planning_name == '6a':
-        result = generate_6a_calendar(current_app.config['school_weeks'])
-    elif planning_name == '6f':
-        result = generate_6f_calendar(current_app.config['school_weeks'])
+        result = current_app.config['bus_planning'].render_calendar()
+    # elif planning_name == '6a':
+    #     result = generate_6a_calendar(current_app.config['school_weeks'])
+    # elif planning_name == '6f':
+    #     result = generate_6f_calendar(current_app.config['school_weeks'])
     else:
         abort(404)
 
-    response = make_response(result.to_ical(sorted=True).decode())
+    response = make_response(result)
     response.headers['Content-Type'] = 'text/calendar; charset=utf-8'
 
     return response

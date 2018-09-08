@@ -507,6 +507,80 @@ BUS_CALENDAR = [
     ),
 ]
 
+class Planning(object):
+    def __init__(self,
+            events: list,
+            start: datetime,
+            end: datetime,
+            frequency: str = None,
+            name: str = None,
+            description: str = None,
+            timezone=pytz.timezone('Europe/Paris'),
+            excluded_weeks: list = None,
+        ):
+
+        self.events = events
+        self.start = start
+        self.end = end
+        self.frequency = frequency
+        self.excluded_weeks = excluded_weeks
+        self.timezone = timezone
+
+        self.calendar = Calendar()
+        self.calendar.add('version', '2.0')
+        self.calendar.add('calscale', 'GREGORIAN')
+        self.calendar.add('prodid', '-// planning-renderer //')
+        self.calendar.add('x-wr-timezone', self.timezone)
+        self.calendar.add('x-wr-calname', name)
+        self.calendar.add('x-wr-caldesc', description)
+
+    def render_calendar(self) -> str:
+        '''
+        Return a calendar for school bus
+        '''
+
+        for event in self.events:
+            calendar_event = Event()
+            for key, value in event.items():
+                if key in ['start', 'end']:
+                    # If we use relative datetime, calculate absolute value
+                    hours, minutes = value
+                    value = self.start + timedelta(hours=hours, minutes=minutes)
+                    value = '20180903T{:02d}{:02d}00'.format(hours, minutes)
+                    calendar_event.add(
+                        f'dt{key}', value, encode=0
+                    )
+                elif key == 'rrule':
+                    value.update(dict(
+                        freq='weekly',
+                        until=self.end,
+                    ))
+                    calendar_event.add(key, value)
+                else:
+                    calendar_event.add(key, value)
+
+            if self.excluded_weeks:
+                calendar_event.add('exrule', dict(
+                    freq='yearly',
+                    byweekno=self.excluded_weeks
+                ))
+
+            if not event.get('uid'):
+                calendar_event.add('uid', uuid.uuid4())
+
+            if not event.get('dtstamp'):
+                calendar_event.add('dtstamp', vDatetime(datetime.now(pytz.utc)), encode=0)
+
+            self.calendar.add_component(calendar_event)
+
+        return self.calendar.to_ical().decode()
+
+class WeeklyPlanning(Planning):
+
+    def __init__(self, *args, **kwargs):
+        super(WeeklyPlanning, self).__init__(*args, **kwargs)
+        self.frequency = 'weekly'
+
 def generate_6a_calendar(weeks_number: list) -> Calendar:
     '''
     '''
@@ -577,8 +651,7 @@ def generate_school_calendar(
 
             until = rrule.get('until', SCHOOL_CALENDAR_END)
             rrule.update(dict(
-                # byweekno=current_weeks_number,
-                freq='yearly',
+                freq='weekly',
                 until=until,
             ))
             calendar_event.add('rrule', rrule)
@@ -587,56 +660,7 @@ def generate_school_calendar(
 
     return result
 
-
-def generate_school_bus_calendar(weeks_number: list) -> Calendar:
-    '''
-    Return a calendar for school bus
-    '''
-    result = Calendar()
-    result.add('version', '2.0')
-    result.add('calscale', 'GREGORIAN')
-    result.add('prodid', '-// schoolbus-scheduler //')
-    result.add('x-wr-timezone', TIMEZONE)
-    result.add('x-wr-calname', 'Bus scolaires')
-    result.add('x-wr-caldesc', 'Bus scolaires')
-
-    for event in BUS_CALENDAR:
-        calendar_event = Event()
-        for key, value in event.items():
-            if key in ['start', 'end']:
-                # If we use relative datetime, calculate absolute value
-                hours, minutes = value
-                value = BUS_CALENDAR_START + timedelta(hours=hours, minutes=minutes)
-                value = '20180903T{:02d}{:02d}00'.format(hours, minutes)
-                calendar_event.add(
-                    f'dt{key}', value, encode=0
-                )
-            elif key == 'rrule':
-                value.update(dict(
-                    # byweekno=weeks_number,
-                    freq='weekly',
-                    until=BUS_CALENDAR_END,
-                ))
-                calendar_event.add(key, value)
-            else:
-                calendar_event.add(key, value)
-
-        calendar_event.add('exrule', dict(
-            freq='yearly',
-            byweekno=get_holidays_weeks()
-        ))
-
-        if not event.get('uid'):
-            calendar_event.add('uid', uuid.uuid4())
-
-        if not event.get('dtstamp'):
-            calendar_event.add('dtstamp', vDatetime(datetime.now(pytz.utc)), encode=0)
-
-        result.add_component(calendar_event)
-
-    return result
-
-def get_holidays_weeks() -> list:
+def get_holidays_weeks(date_start: datetime, date_end: datetime) -> list:
     '''
     Return a list of all holidays weeks number
     '''
@@ -670,10 +694,10 @@ def get_holidays_weeks() -> list:
             dt_start = dt_start + relativedelta(weekday=MO(1))
 
             # Official calendars has both calendar and scholar years
-            if dt_start < SCHOOL_CALENDAR_START.replace(tzinfo=pytz.timezone('Europe/Paris')):
+            if dt_start < date_start.replace(tzinfo=pytz.timezone('Europe/Paris')):
                 continue
 
-            if dt_end > SCHOOL_CALENDAR_END.replace(tzinfo=pytz.timezone('Europe/Paris')):
+            if dt_end > date_end.replace(tzinfo=pytz.timezone('Europe/Paris')):
                 continue
 
             start_week = dt_start.isocalendar()[1]
@@ -691,6 +715,26 @@ def get_holidays_weeks() -> list:
 
 
             result.extend(holidays_weeks)
+
+    return result
+
+def get_weeks_number(start_date, end_date) -> list:
+    '''
+    List all week numbers of school
+    '''
+    result = list()
+    # holidays_weeks = get_holidays_weeks()
+
+    start_week = start_date.isocalendar()[1]
+    end_week = end_date.isocalendar()[1]
+    last_week_of_year = date(start_date.isocalendar()[0], 12, 28).isocalendar()[1]
+
+    weeks = list()
+    weeks.extend(range(start_week, last_week_of_year+1))
+    weeks.extend(range(1, end_week))
+
+    # result = list(set(weeks) - set(holidays_weeks))
+    result = weeks
 
     return result
 
@@ -714,4 +758,11 @@ def get_school_weeks() -> list:
     return result
 
 if __name__ == '__main__':
-    generate_school_bus_calendar(get_school_weeks())
+    bus_planning = WeeklyPlanning(
+        events=BUS_CALENDAR,
+        start=BUS_CALENDAR_START,
+        end=BUS_CALENDAR_END,
+        excluded_weeks=get_holidays_weeks(date_start=SCHOOL_CALENDAR_START, date_end=SCHOOL_CALENDAR_END),
+    )
+
+    print(bus_planning.render_calendar())
