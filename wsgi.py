@@ -17,7 +17,7 @@ def create_app() -> Flask:
         events=BUS_CALENDAR,
         start=calendars_start,
         end=calendars_end,
-        # excluded_weeks=get_holidays_weeks(date_start=calendars_start, date_end=calendars_end),
+        excluded_weeks=get_holidays_weeks(date_start=calendars_start, date_end=calendars_end),
     )
 
     return app
