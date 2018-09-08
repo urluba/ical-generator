@@ -29,7 +29,7 @@ def get_ical(planning_name: str) -> str:
     else:
         abort(404)
 
-    response = make_response(result.to_ical().decode().replace('\r\n ', ''))
+    response = make_response(result.to_ical(sorted=True).decode().replace('\r\n ', ''))
     response.headers['Content-Type'] = 'text/calendar; charset=utf-8'
 
     return response
