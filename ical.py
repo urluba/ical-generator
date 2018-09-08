@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta, MO, SU
-from icalendar import Calendar, Event, vDate
+from icalendar import Calendar, Event, vDatetime
 import pytz
 import uuid
 
@@ -625,7 +625,7 @@ def generate_school_bus_calendar(weeks_number: list) -> Calendar:
             calendar_event.add('uid', uuid.uuid4())
 
         if not event.get('dtstamp'):
-            calendar_event.add('dtstamp', datetime.now(pytz.utc))
+            calendar_event.add('dtstamp', vDatetime(datetime.now(pytz.utc)), encode=0)
 
         result.add_component(calendar_event)
 
