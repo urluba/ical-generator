@@ -568,7 +568,7 @@ def generate_school_calendar(
             calendar_event.add('uid', uuid.uuid4())
 
         if not event.get('dtstamp'):
-            calendar_event.add('dtstamp', datetime.now())
+            calendar_event.add('dtstamp', vDatetime(datetime.now(pytz.utc)), encode=0)
 
         if rrule:
             current_weeks_number = weeks_number_type.get(
@@ -620,6 +620,11 @@ def generate_school_bus_calendar(weeks_number: list) -> Calendar:
                 calendar_event.add(key, value)
             else:
                 calendar_event.add(key, value)
+
+        calendar_event.add('exrule', dict(
+            freq='yearly',
+            byweekno=get_holidays_weeks()
+        ))
 
         if not event.get('uid'):
             calendar_event.add('uid', uuid.uuid4())
