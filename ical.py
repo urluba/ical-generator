@@ -562,7 +562,7 @@ class Planning(object):
                     )
 
                     calendar_event.add(
-                        f'dt{key};{self.timezone}', value, encode=0
+                        f'dt{key}', value, encode=0
                     )
                 elif key == 'rrule':
                     value.update(dict(
