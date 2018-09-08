@@ -570,7 +570,7 @@ def generate_school_calendar(
 
             until = rrule.get('until', SCHOOL_CALENDAR_END)
             rrule.update(dict(
-                byweekno=current_weeks_number,
+                # byweekno=current_weeks_number,
                 freq='yearly',
                 until=until,
             ))
