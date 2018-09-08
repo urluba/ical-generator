@@ -451,60 +451,60 @@ BUS_CALENDAR = [
             byday=['MO', 'TU', 'WE', 'TH', 'FR'],
         )
     ),
-    # dict(
-    #     summary='roseraie',
-    #     start=(8, 57),
-    #     duration=timedelta(minutes=1),
-    #     location='roseraie',
-    #     rrule=dict(
-    #         byday=['MO', 'TU', 'WE', 'TH', 'FR'],
-    #     )
-    # ),
-    # dict(
-    #     summary='place du clos',
-    #     start=(12, 38, 2),
-    #     duration=timedelta(minutes=1),
-    #     location='place du clos',
-    #     rrule=dict(
-    #         byday=['WE'],
-    #     )
-    # ),
-    # dict(
-    #     summary='place du clos',
-    #     start=(15, 42),
-    #     duration=timedelta(minutes=1),
-    #     location='place du clos',
-    #     rrule=dict(
-    #         byday=['MO', 'TU', 'WE', 'TH', 'FR'],
-    #     )
-    # ),
-    # dict(
-    #     summary='place du clos',
-    #     start=(16, 42),
-    #     duration=timedelta(minutes=1),
-    #     location='place du clos',
-    #     rrule=dict(
-    #         byday=['MO', 'TU', 'WE', 'TH', 'FR'],
-    #     )
-    # ),
-    # dict(
-    #     summary='place du clos',
-    #     start=(17, 39),
-    #     duration=timedelta(minutes=1),
-    #     location='place du clos',
-    #     rrule=dict(
-    #         byday=['MO', 'TU', 'WE', 'TH', 'FR'],
-    #     )
-    # ),
-    # dict(
-    #     summary='place du clos',
-    #     start=(16, 45, 3),
-    #     duration=timedelta(minutes=1),
-    #     location='place du clos',
-    #     rrule=dict(
-    #         byday=['TH', 'FR'],
-    #     )
-    # ),
+    dict(
+        summary='roseraie',
+        start=(8, 57),
+        duration=timedelta(minutes=1),
+        location='roseraie',
+        rrule=dict(
+            byday=['MO', 'TU', 'WE', 'TH', 'FR'],
+        )
+    ),
+    dict(
+        summary='place du clos',
+        start=(12, 38, 2),
+        duration=timedelta(minutes=1),
+        location='place du clos',
+        rrule=dict(
+            byday=['WE'],
+        )
+    ),
+    dict(
+        summary='place du clos',
+        start=(15, 42),
+        duration=timedelta(minutes=1),
+        location='place du clos',
+        rrule=dict(
+            byday=['MO', 'TU', 'WE', 'TH', 'FR'],
+        )
+    ),
+    dict(
+        summary='place du clos',
+        start=(16, 42),
+        duration=timedelta(minutes=1),
+        location='place du clos',
+        rrule=dict(
+            byday=['MO', 'TU', 'WE', 'TH', 'FR'],
+        )
+    ),
+    dict(
+        summary='place du clos',
+        start=(17, 39),
+        duration=timedelta(minutes=1),
+        location='place du clos',
+        rrule=dict(
+            byday=['MO', 'TU', 'WE', 'TH', 'FR'],
+        )
+    ),
+    dict(
+        summary='place du clos',
+        start=(16, 45, 3),
+        duration=timedelta(minutes=1),
+        location='place du clos',
+        rrule=dict(
+            byday=['TH', 'FR'],
+        )
+    ),
 ]
 
 class Planning(object):
@@ -567,6 +567,7 @@ class Planning(object):
                         freq='yearly',
                         interval=1,
                         until=self.end,
+                        wkst='MO'
                     ))
                     calendar_event.add(key, value)
                 else:
