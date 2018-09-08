@@ -613,7 +613,7 @@ def generate_school_bus_calendar(weeks_number: list) -> Calendar:
                 )
             elif key == 'rrule':
                 value.update(dict(
-                    # byweekno=weeks_number,
+                    byweekno=weeks_number,
                     freq='yearly',
                     until=BUS_CALENDAR_END,
                 ))
