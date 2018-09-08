@@ -530,6 +530,7 @@ def generate_school_calendar(
     result = Calendar()
     result.add('version', '2.0')
     result.add('calscale', 'GREGORIAN')
+    result.add('prodid', '-// schoolbus-scheduler //')
     result.add('x-wr-timezone', TIMEZONE)
     if title:
         result.add('x-wr-calname', title)
@@ -594,7 +595,7 @@ def generate_school_bus_calendar(weeks_number: list) -> Calendar:
     result = Calendar()
     result.add('version', '2.0')
     result.add('calscale', 'GREGORIAN')
-    result.add('prodid', '-// school-scheduler //')
+    result.add('prodid', '-// schoolbus-scheduler //')
     result.add('x-wr-timezone', TIMEZONE)
     result.add('x-wr-calname', 'Bus scolaires')
     result.add('x-wr-caldesc', 'Bus scolaires')
