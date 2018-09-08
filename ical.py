@@ -451,60 +451,60 @@ BUS_CALENDAR = [
             byday=['MO', 'TU', 'WE', 'TH', 'FR'],
         )
     ),
-    # dict(
-    #     summary='roseraie',
-    #     start=(8, 57),
-    #     duration=timedelta(minutes=1),
-    #     location='roseraie',
-    #     rrule=dict(
-    #         byday=['MO', 'TU', 'WE', 'TH', 'FR'],
-    #     )
-    # ),
-    # dict(
-    #     summary='place du clos',
-    #     start=(12, 38),
-    #     duration=timedelta(minutes=1),
-    #     location='place du clos',
-    #     rrule=dict(
-    #         byday=['WE'],
-    #     )
-    # ),
-    # dict(
-    #     summary='place du clos',
-    #     start=(15, 42),
-    #     duration=timedelta(minutes=1),
-    #     location='place du clos',
-    #     rrule=dict(
-    #         byday=['MO', 'TU', 'WE', 'TH', 'FR'],
-    #     )
-    # ),
-    # dict(
-    #     summary='place du clos',
-    #     start=(16, 42),
-    #     duration=timedelta(minutes=1),
-    #     location='place du clos',
-    #     rrule=dict(
-    #         byday=['MO', 'TU', 'WE', 'TH', 'FR'],
-    #     )
-    # ),
-    # dict(
-    #     summary='place du clos',
-    #     start=(17, 39),
-    #     duration=timedelta(minutes=1),
-    #     location='place du clos',
-    #     rrule=dict(
-    #         byday=['MO', 'TU', 'WE', 'TH', 'FR'],
-    #     )
-    # ),
-    # dict(
-    #     summary='place du clos',
-    #     start=(16, 45),
-    #     duration=timedelta(minutes=1),
-    #     location='place du clos',
-    #     rrule=dict(
-    #         byday=['TH', 'FR'],
-    #     )
-    # ),
+    dict(
+        summary='roseraie',
+        start=(8, 57),
+        duration=timedelta(minutes=1),
+        location='roseraie',
+        rrule=dict(
+            byday=['MO', 'TU', 'WE', 'TH', 'FR'],
+        )
+    ),
+    dict(
+        summary='place du clos',
+        start=(12, 38),
+        duration=timedelta(minutes=1),
+        location='place du clos',
+        rrule=dict(
+            byday=['WE'],
+        )
+    ),
+    dict(
+        summary='place du clos',
+        start=(15, 42),
+        duration=timedelta(minutes=1),
+        location='place du clos',
+        rrule=dict(
+            byday=['MO', 'TU', 'WE', 'TH', 'FR'],
+        )
+    ),
+    dict(
+        summary='place du clos',
+        start=(16, 42),
+        duration=timedelta(minutes=1),
+        location='place du clos',
+        rrule=dict(
+            byday=['MO', 'TU', 'WE', 'TH', 'FR'],
+        )
+    ),
+    dict(
+        summary='place du clos',
+        start=(17, 39),
+        duration=timedelta(minutes=1),
+        location='place du clos',
+        rrule=dict(
+            byday=['MO', 'TU', 'WE', 'TH', 'FR'],
+        )
+    ),
+    dict(
+        summary='place du clos',
+        start=(16, 45),
+        duration=timedelta(minutes=1),
+        location='place du clos',
+        rrule=dict(
+            byday=['TH', 'FR'],
+        )
+    ),
 ]
 
 def generate_6a_calendar(weeks_number: list) -> Calendar:
