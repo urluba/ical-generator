@@ -567,6 +567,7 @@ class Planning(object):
                 elif key == 'rrule':
                     value.update(dict(
                         freq='weekly',
+                        interval=1,
                         until=self.end,
                     ))
                     calendar_event.add(key, value)
