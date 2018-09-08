@@ -564,7 +564,7 @@ class Planning(object):
 
                 elif key == 'rrule':
                     value.update(dict(
-                        freq='yearly',
+                        freq='weekly',
                         interval=1,
                         until=self.end,
                         wkst='MO'
@@ -587,7 +587,7 @@ class Planning(object):
                 calendar_event.add('dtstamp', vDatetime(datetime.now(pytz.utc)), encode=0)
 
             # TODO jours feries
-            calendar_event.add(f'exdate;{self.timezone}', '20181101T010101', encode=0)
+            calendar_event.add(f'exdate;{self.timezone}', '20190501T010101', encode=0)
 
             self.calendar.add_component(calendar_event)
 
