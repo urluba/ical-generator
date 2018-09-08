@@ -2,7 +2,7 @@ from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta, MO, SU
 from icalendar import Calendar, Event, vDate
 import pytz
-
+import uuid
 
 TIMEZONE = pytz.timezone('Europe/Paris')
 BUS_CALENDAR_START = datetime(2018, 9, 3)
@@ -451,60 +451,60 @@ BUS_CALENDAR = [
             byday=['MO', 'TU', 'WE', 'TH', 'FR'],
         )
     ),
-    dict(
-        summary='roseraie',
-        start=(8, 57),
-        duration=timedelta(minutes=1),
-        location='roseraie',
-        rrule=dict(
-            byday=['MO', 'TU', 'WE', 'TH', 'FR'],
-        )
-    ),
-    dict(
-        summary='place du clos',
-        start=(12, 38),
-        duration=timedelta(minutes=1),
-        location='place du clos',
-        rrule=dict(
-            byday=['WE'],
-        )
-    ),
-    dict(
-        summary='place du clos',
-        start=(15, 42),
-        duration=timedelta(minutes=1),
-        location='place du clos',
-        rrule=dict(
-            byday=['MO', 'TU', 'WE', 'TH', 'FR'],
-        )
-    ),
-    dict(
-        summary='place du clos',
-        start=(16, 42),
-        duration=timedelta(minutes=1),
-        location='place du clos',
-        rrule=dict(
-            byday=['MO', 'TU', 'WE', 'TH', 'FR'],
-        )
-    ),
-    dict(
-        summary='place du clos',
-        start=(17, 39),
-        duration=timedelta(minutes=1),
-        location='place du clos',
-        rrule=dict(
-            byday=['MO', 'TU', 'WE', 'TH', 'FR'],
-        )
-    ),
-    dict(
-        summary='place du clos',
-        start=(16, 45),
-        duration=timedelta(minutes=1),
-        location='place du clos',
-        rrule=dict(
-            byday=['TH', 'FR'],
-        )
-    ),
+    # dict(
+    #     summary='roseraie',
+    #     start=(8, 57),
+    #     duration=timedelta(minutes=1),
+    #     location='roseraie',
+    #     rrule=dict(
+    #         byday=['MO', 'TU', 'WE', 'TH', 'FR'],
+    #     )
+    # ),
+    # dict(
+    #     summary='place du clos',
+    #     start=(12, 38),
+    #     duration=timedelta(minutes=1),
+    #     location='place du clos',
+    #     rrule=dict(
+    #         byday=['WE'],
+    #     )
+    # ),
+    # dict(
+    #     summary='place du clos',
+    #     start=(15, 42),
+    #     duration=timedelta(minutes=1),
+    #     location='place du clos',
+    #     rrule=dict(
+    #         byday=['MO', 'TU', 'WE', 'TH', 'FR'],
+    #     )
+    # ),
+    # dict(
+    #     summary='place du clos',
+    #     start=(16, 42),
+    #     duration=timedelta(minutes=1),
+    #     location='place du clos',
+    #     rrule=dict(
+    #         byday=['MO', 'TU', 'WE', 'TH', 'FR'],
+    #     )
+    # ),
+    # dict(
+    #     summary='place du clos',
+    #     start=(17, 39),
+    #     duration=timedelta(minutes=1),
+    #     location='place du clos',
+    #     rrule=dict(
+    #         byday=['MO', 'TU', 'WE', 'TH', 'FR'],
+    #     )
+    # ),
+    # dict(
+    #     summary='place du clos',
+    #     start=(16, 45),
+    #     duration=timedelta(minutes=1),
+    #     location='place du clos',
+    #     rrule=dict(
+    #         byday=['TH', 'FR'],
+    #     )
+    # ),
 ]
 
 def generate_6a_calendar(weeks_number: list) -> Calendar:
@@ -563,6 +563,9 @@ def generate_school_calendar(
             else:
                 calendar_event.add(key, value)
 
+        if not event.get('uid'):
+            calendar_event.add('uid', uuid.uuid4())
+
         if rrule:
             current_weeks_number = weeks_number_type.get(
                 week_type, weeks_number
@@ -588,6 +591,7 @@ def generate_school_bus_calendar(weeks_number: list) -> Calendar:
     result = Calendar()
     result.add('version', '2.0')
     result.add('calscale', 'GREGORIAN')
+    result.add('prodid', '-// school-scheduler //')
     result.add('x-wr-timezone', TIMEZONE)
     result.add('x-wr-calname', 'Bus scolaires')
     result.add('x-wr-caldesc', 'Bus scolaires')
@@ -612,6 +616,9 @@ def generate_school_bus_calendar(weeks_number: list) -> Calendar:
                 calendar_event.add(key, value)
             else:
                 calendar_event.add(key, value)
+
+        if not event.get('uid'):
+            calendar_event.add('uid', uuid.uuid4())
 
         result.add_component(calendar_event)
 
