@@ -451,60 +451,60 @@ BUS_CALENDAR = [
             byday=['MO', 'TU', 'WE', 'TH', 'FR'],
         )
     ),
-    dict(
-        summary='roseraie',
-        start=(8, 57),
-        duration=timedelta(minutes=1),
-        location='roseraie',
-        rrule=dict(
-            byday=['MO', 'TU', 'WE', 'TH', 'FR'],
-        )
-    ),
-    dict(
-        summary='place du clos',
-        start=(12, 38),
-        duration=timedelta(minutes=1),
-        location='place du clos',
-        rrule=dict(
-            byday=['WE'],
-        )
-    ),
-    dict(
-        summary='place du clos',
-        start=(15, 42),
-        duration=timedelta(minutes=1),
-        location='place du clos',
-        rrule=dict(
-            byday=['MO', 'TU', 'WE', 'TH', 'FR'],
-        )
-    ),
-    dict(
-        summary='place du clos',
-        start=(16, 42),
-        duration=timedelta(minutes=1),
-        location='place du clos',
-        rrule=dict(
-            byday=['MO', 'TU', 'WE', 'TH', 'FR'],
-        )
-    ),
-    dict(
-        summary='place du clos',
-        start=(17, 39),
-        duration=timedelta(minutes=1),
-        location='place du clos',
-        rrule=dict(
-            byday=['MO', 'TU', 'WE', 'TH', 'FR'],
-        )
-    ),
-    dict(
-        summary='place du clos',
-        start=(16, 45),
-        duration=timedelta(minutes=1),
-        location='place du clos',
-        rrule=dict(
-            byday=['TH', 'FR'],
-        )
-    ),
+    # dict(
+    #     summary='roseraie',
+    #     start=(8, 57),
+    #     duration=timedelta(minutes=1),
+    #     location='roseraie',
+    #     rrule=dict(
+    #         byday=['MO', 'TU', 'WE', 'TH', 'FR'],
+    #     )
+    # ),
+    # dict(
+    #     summary='place du clos',
+    #     start=(12, 38),
+    #     duration=timedelta(minutes=1),
+    #     location='place du clos',
+    #     rrule=dict(
+    #         byday=['WE'],
+    #     )
+    # ),
+    # dict(
+    #     summary='place du clos',
+    #     start=(15, 42),
+    #     duration=timedelta(minutes=1),
+    #     location='place du clos',
+    #     rrule=dict(
+    #         byday=['MO', 'TU', 'WE', 'TH', 'FR'],
+    #     )
+    # ),
+    # dict(
+    #     summary='place du clos',
+    #     start=(16, 42),
+    #     duration=timedelta(minutes=1),
+    #     location='place du clos',
+    #     rrule=dict(
+    #         byday=['MO', 'TU', 'WE', 'TH', 'FR'],
+    #     )
+    # ),
+    # dict(
+    #     summary='place du clos',
+    #     start=(17, 39),
+    #     duration=timedelta(minutes=1),
+    #     location='place du clos',
+    #     rrule=dict(
+    #         byday=['MO', 'TU', 'WE', 'TH', 'FR'],
+    #     )
+    # ),
+    # dict(
+    #     summary='place du clos',
+    #     start=(16, 45),
+    #     duration=timedelta(minutes=1),
+    #     location='place du clos',
+    #     rrule=dict(
+    #         byday=['TH', 'FR'],
+    #     )
+    # ),
 ]
 
 def generate_6a_calendar(weeks_number: list) -> Calendar:
@@ -599,14 +599,15 @@ def generate_school_bus_calendar(weeks_number: list) -> Calendar:
                 # If we use relative datetime, calculate absolute value
                 hours, minutes = value
                 value = BUS_CALENDAR_START + timedelta(hours=hours, minutes=minutes)
+                value = '20180903T{:02d}{:02d}00'.format(hours, minutes)
                 calendar_event.add(
-                    f'dt{key}', '20180903T{:02d}{:02d}00'.format(hours, minutes), encode=0
+                    f'dt{key}', value, encode=0
                 )
             elif key == 'rrule':
                 value.update(dict(
                     byweekno=weeks_number,
                     freq='yearly',
-                    until=BUS_CALENDAR_END,
+                    # until=BUS_CALENDAR_END,
                 ))
                 calendar_event.add(key, value)
             else:
