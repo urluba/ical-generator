@@ -566,6 +566,9 @@ def generate_school_calendar(
         if not event.get('uid'):
             calendar_event.add('uid', uuid.uuid4())
 
+        if not event.get('dtstamp'):
+            calendar_event.add('dtstamp', datetime.now())
+
         if rrule:
             current_weeks_number = weeks_number_type.get(
                 week_type, weeks_number
