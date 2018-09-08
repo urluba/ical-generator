@@ -462,7 +462,7 @@ BUS_CALENDAR = [
     ),
     dict(
         summary='place du clos',
-        start=(12, 38),
+        start=(12, 38, 2),
         duration=timedelta(minutes=1),
         location='place du clos',
         rrule=dict(
@@ -498,7 +498,7 @@ BUS_CALENDAR = [
     ),
     dict(
         summary='place du clos',
-        start=(16, 45),
+        start=(16, 45, 3),
         duration=timedelta(minutes=1),
         location='place du clos',
         rrule=dict(
@@ -543,10 +543,24 @@ class Planning(object):
             calendar_event = Event()
             for key, value in event.items():
                 if key in ['start', 'end']:
-                    # If we use relative datetime, calculate absolute value
-                    hours, minutes = value
-                    value = self.start + timedelta(hours=hours, minutes=minutes)
-                    value = '20180903T{:02d}{:02d}00'.format(hours, minutes)
+                    # Optionnal offset to fix display in google agenda
+                    if len(value) == 2:
+                        hours, minutes = value
+                        day_offset = 0
+                    elif len(value) == 3:
+                        hours, minutes, day_offset = value
+                    else:
+                        raise ValueError
+
+                    # Workaround for issues on dtend / dtstart format
+                    value = '{year}{month:02d}{day:02d}T{hour:02d}{minute:02d}00'.format(
+                        year=self.start.year,
+                        month=self.start.month,
+                        day=self.start.day + day_offset,
+                        hour=hours,
+                        minute=minutes,
+                    )
+
                     calendar_event.add(
                         f'dt{key}', value, encode=0
                     )
@@ -568,6 +582,7 @@ class Planning(object):
             if not event.get('uid'):
                 calendar_event.add('uid', uuid.uuid4())
 
+            # TODO check dtstamp, created at and co
             if not event.get('dtstamp'):
                 calendar_event.add('dtstamp', vDatetime(datetime.now(pytz.utc)), encode=0)
 
@@ -716,7 +731,7 @@ def get_holidays_weeks(date_start: datetime, date_end: datetime) -> list:
 
             result.extend(holidays_weeks)
 
-    return result
+    return sorted(result)
 
 def get_weeks_number(start_date, end_date) -> list:
     '''
