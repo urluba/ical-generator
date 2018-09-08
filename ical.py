@@ -599,7 +599,9 @@ def generate_school_bus_calendar(weeks_number: list) -> Calendar:
                 # If we use relative datetime, calculate absolute value
                 hours, minutes = value
                 value = BUS_CALENDAR_START + timedelta(hours=hours, minutes=minutes)
-                calendar_event.add(f'dt{key}', value)
+                calendar_event.add(
+                    f'dt{key}', '20180903T{:02d}{:02d}00'.format(hours, minutes), encode=0
+                )
             elif key == 'rrule':
                 value.update(dict(
                     byweekno=weeks_number,
@@ -689,7 +691,6 @@ def get_school_weeks() -> list:
 
     result = list(set(school_weeks) - set(holidays_weeks))
 
-    return [36,37]
     return result
 
 if __name__ == '__main__':
