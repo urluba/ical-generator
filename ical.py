@@ -634,8 +634,6 @@ class PlanningTest(Planning):
                 else:
                     calendar_event.add(key, value)
 
-            break
-
             # EXRULE is obsolete in latest RFC!
             # if self.excluded_weeks:
             #     calendar_event.add('exrule', dict(
@@ -662,6 +660,8 @@ class PlanningTest(Planning):
             calendar_event.add(f'exdate', '20181101T010101', encode=0)
 
             self.calendar.add_component(calendar_event)
+
+        break
 
         # Convert from binary
         return self.calendar.to_ical().decode()
