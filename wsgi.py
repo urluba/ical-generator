@@ -2,7 +2,7 @@ from datetime import datetime, timedelta, date
 from flask import Flask, current_app, abort, make_response
 import pytz
 from ical import WeeklyPlanning, get_holidays_weeks
-from ical import BUS_CALENDAR
+from ical import BUS_CALENDAR, SCHOOL_6A_CALENDAR, SCHOOL_6F_CALENDAR
 
 def create_app() -> Flask:
     ''' Return a Flask application '''
@@ -20,6 +20,24 @@ def create_app() -> Flask:
         excluded_weeks=get_holidays_weeks(date_start=calendars_start, date_end=calendars_end),
     ).render_calendar()
 
+    app.config['class_6a_planning'] = WeeklyPlanning(
+        name='6A',
+        description='Calendrier de la 6°A',
+        events=SCHOOL_6A_CALENDAR,
+        start=calendars_start,
+        end=calendars_end,
+        excluded_weeks=get_holidays_weeks(date_start=calendars_start, date_end=calendars_end),
+    ).render_calendar()
+
+    app.config['class_6f_planning'] = WeeklyPlanning(
+        name='6F',
+        description='Calendrier de la 6°F',
+        events=SCHOOL_6F_CALENDAR,
+        start=calendars_start,
+        end=calendars_end,
+        excluded_weeks=get_holidays_weeks(date_start=calendars_start, date_end=calendars_end),
+    ).render_calendar()
+
     return app
 
 FLASK_APP = create_app()
@@ -32,10 +50,10 @@ def get_ical(planning_name: str) -> str:
 
     if planning_name == 'bus':
         result = current_app.config['bus_planning']
-    # elif planning_name == '6a':
-    #     result = generate_6a_calendar(current_app.config['school_weeks'])
-    # elif planning_name == '6f':
-    #     result = generate_6f_calendar(current_app.config['school_weeks'])
+    elif planning_name == '6a':
+        result = current_app.config['class_6a_planning']
+    elif planning_name == '6f':
+        result = current_app.config['class_6f_planning']
     else:
         abort(404)
 

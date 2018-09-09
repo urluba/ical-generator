@@ -4,13 +4,6 @@ from icalendar import Calendar, Event, vDatetime
 import pytz
 import uuid
 
-TIMEZONE = pytz.timezone('Europe/Paris')
-BUS_CALENDAR_START = datetime(2018, 9, 3, 1, 0, 1, 0, pytz.utc)
-BUS_CALENDAR_END = datetime(2019, 7, 8, 1, 0, 1, 0, pytz.utc)
-
-SCHOOL_CALENDAR_START = BUS_CALENDAR_START
-SCHOOL_CALENDAR_END = BUS_CALENDAR_END
-
 SCHOOL_6A_CALENDAR = [
     dict(
         summary='A. PLASTIQUES',
@@ -607,71 +600,6 @@ class WeeklyPlanning(Planning):
         super(WeeklyPlanning, self).__init__(*args, **kwargs)
         self.frequency = 'weekly'
 
-def generate_school_calendar(
-    weeks_number: list, school_planning: dict, title: str = None,
-    ) -> Calendar:
-    '''
-    Return calendar for 6a
-    '''
-    result = Calendar()
-    result.add('version', '2.0')
-    result.add('calscale', 'GREGORIAN')
-    result.add('prodid', '-// schoolbus-scheduler //')
-    result.add('x-wr-timezone', TIMEZONE)
-    if title:
-        result.add('x-wr-calname', title)
-        result.add('x-wr-caldesc', f'Agenda pour la {title}')
-
-    weeks_number_type = dict(
-        a=[number for index, number in enumerate(weeks_number) if index % 2 == 0],
-        b=[number for index, number in enumerate(weeks_number) if index % 2 == 1],
-    )
-
-    for event in school_planning:
-        calendar_event = Event()
-        week_type = 'always'
-        rrule = None
-        for key, value in event.items():
-            if key in ['start', 'end']:
-                # If we use relative datetime, calculate absolute value
-                if len (value) == 2:
-                    hours, minutes = value
-                    current_value = SCHOOL_CALENDAR_START + timedelta(hours=hours, minutes=minutes)
-                elif len (value) == 3:
-                    hours, minutes, days = value
-                    current_value = SCHOOL_CALENDAR_START + timedelta(hours=hours, minutes=minutes, days=days)
-                else:
-                    raise ValueError
-                calendar_event.add(f'dt{key}', current_value)
-            elif key == 'week_type':
-                week_type = value
-            elif key == 'rrule':
-                rrule = value
-            else:
-                calendar_event.add(key, value)
-
-        if not event.get('uid'):
-            calendar_event.add('uid', uuid.uuid4())
-
-        if not event.get('dtstamp'):
-            calendar_event.add('dtstamp', vDatetime(datetime.now(pytz.utc)), encode=0)
-
-        if rrule:
-            current_weeks_number = weeks_number_type.get(
-                week_type, weeks_number
-            )
-
-            until = rrule.get('until', SCHOOL_CALENDAR_END)
-            rrule.update(dict(
-                freq='weekly',
-                until=until,
-            ))
-            calendar_event.add('rrule', rrule)
-
-        result.add_component(calendar_event)
-
-    return result
-
 def get_holidays_weeks(date_start: datetime, date_end: datetime) -> list:
     '''
     Return a list of all holidays weeks number
@@ -730,12 +658,3 @@ def get_holidays_weeks(date_start: datetime, date_end: datetime) -> list:
 
     return sorted(result)
 
-if __name__ == '__main__':
-    bus_planning = WeeklyPlanning(
-        events=BUS_CALENDAR,
-        start=BUS_CALENDAR_START,
-        end=BUS_CALENDAR_END,
-        excluded_weeks=get_holidays_weeks(date_start=SCHOOL_CALENDAR_START, date_end=SCHOOL_CALENDAR_END),
-    )
-
-    print(bus_planning.render_calendar())
