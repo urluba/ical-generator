@@ -587,19 +587,45 @@ class Planning(object):
                 calendar_event.add('dtstamp', vDatetime(datetime.now(pytz.utc)), encode=0)
 
             # TODO jours feries
-            calendar_event.add(f'exdate;{self.timezone}', '20190501T010101', encode=0)
+            # calendar_event.add(f'exdate;{self.timezone}', '20190501T010101', encode=0)
 
             self.calendar.add_component(calendar_event)
 
         # Convert from binary
         return self.calendar.to_ical().decode()
 
-class PlanningTest(Planning):
+class PlanningTest(object):
+    def __init__(self,
+            events: list,
+            start: datetime,
+            end: datetime,
+            frequency: str = None,
+            name: str = 'Calendrier',
+            description: str = 'Calendrier',
+            timezone=pytz.timezone('Europe/Paris'),
+            excluded_weeks: list = None,
+        ):
+
+        self.events = events
+        self.start = start
+        self.end = end
+        self.frequency = frequency
+        self.excluded_weeks = excluded_weeks
+        self.timezone = timezone
+
+        self.calendar = Calendar()
+        self.calendar.add('version', '2.0')
+        self.calendar.add('calscale', 'GREGORIAN')
+        self.calendar.add('prodid', '-// planning-renderer //')
+        self.calendar.add('x-wr-timezone', self.timezone)
+        self.calendar.add('x-wr-calname', name)
+        self.calendar.add('x-wr-caldesc', description)
+
     def render_calendar(self) -> str:
         '''
         Return a calendar for school bus
         '''
-
+        print('dans le test')
         for event in self.events:
             calendar_event = Event()
             for key, value in event.items():
@@ -627,6 +653,15 @@ class PlanningTest(Planning):
                         dtstart_minute = minutes
 
                     calendar_event.add(f'dt{key};{self.timezone}', value, encode=0)
+
+                elif key == 'rrule':
+                    value.update(dict(
+                        freq='weekly',
+                        interval=1,
+                        until=self.end,
+                    ))
+                    calendar_event.add(key, value)
+
                 else:
                     calendar_event.add(key, value)
 
@@ -652,14 +687,11 @@ class PlanningTest(Planning):
                 calendar_event.add('dtstamp', vDatetime(datetime.now(pytz.utc)), encode=0)
 
             # TODO jours feries
-            calendar_event.add(
-                f'exdate;{self.timezone}',
-                f'20180911T{dtstart_hour:02d}{dtstart_minute:02d}00',
-                encode=0
-            )
-            # calendar_event.add(f'exdate', '20180913T010101', encode=0)
-            # calendar_event.add(f'exdate', '20190501T010101', encode=0)
-            # calendar_event.add(f'exdate', '20181101T010101', encode=0)
+            # calendar_event.add(
+            #     f'exdate;{self.timezone}',
+            #     f'20180911T{dtstart_hour:02d}{dtstart_minute:02d}00',
+            #     encode=0
+            # )
 
             self.calendar.add_component(calendar_event)
 
