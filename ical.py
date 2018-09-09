@@ -572,10 +572,10 @@ class Planning(object):
                     byweekno=self.excluded_weeks
                 ))
 
+            # If UUID is dyn generated, it will result in duplicated events on iOS
             # if not event.get('uid'):
             #     calendar_event.add('uid', uuid.uuid4())
 
-            # TODO check dtstamp, created at and co
             # CREATED
             # This is the timestamp of when an event-object was created in a calendar application. Each event-object can be identified by a unique Identifier (UID).
             if not event.get('created'):
@@ -594,10 +594,89 @@ class Planning(object):
         # Convert from binary
         return self.calendar.to_ical().decode()
 
+class PlanningTest(Planning):
+    def render_calendar(self) -> str:
+        '''
+        Return a calendar for school bus
+        '''
+
+        for event in self.events:
+            calendar_event = Event()
+            for key, value in event.items():
+                if key in ['start', 'end']:
+                    # Optionnal offset to fix display in google agenda
+                    if len(value) == 2:
+                        hours, minutes = value
+                        day_offset = 0
+                    elif len(value) == 3:
+                        hours, minutes, day_offset = value
+                    else:
+                        raise ValueError
+
+                    # Workaround for issues on dtend / dtstart format
+                    value = '{year}{month:02d}{day:02d}T{hour:02d}{minute:02d}00'.format(
+                        year=self.start.year,
+                        month=self.start.month,
+                        day=self.start.day + day_offset,
+                        hour=hours,
+                        minute=minutes,
+                    )
+                    calendar_event.add(f'dt{key}', value, encode=0)
+
+                elif key == 'rrule':
+                    value.update(dict(
+                        freq='weekly',
+                        interval=1,
+                        until=self.end,
+                        wkst='MO'
+                    ))
+                    calendar_event.add(key, value)
+                else:
+                    calendar_event.add(key, value)
+
+                break
+
+            # EXRULE is obsolete in latest RFC!
+            # if self.excluded_weeks:
+            #     calendar_event.add('exrule', dict(
+            #         freq='yearly',
+            #         byweekno=self.excluded_weeks
+            #     ))
+
+            # If UUID is dyn generated, it will result in duplicated events on iOS
+            # if not event.get('uid'):
+            #     calendar_event.add('uid', uuid.uuid4())
+
+            # CREATED
+            # This is the timestamp of when an event-object was created in a calendar application. Each event-object can be identified by a unique Identifier (UID).
+            if not event.get('created'):
+                calendar_event.add('created', self.start)
+
+            # DTSTAMP
+            # This is the timestamp of the creation of a VEVENT-message in an ical or ics file. There are different types of such VEVENT-message, creating a new event-object is just one of them. You also can change existing events and even cancel events if you add the correct UID to the VEVENT-message to identify which event-object it belongs to. So for one event-object in your calendar application (identified by its UID) you can receive many VEVENT-events, each with its own DTSTAMP, but all referring to an event with just one CREATED date.
+            if not event.get('dtstamp'):
+                calendar_event.add('dtstamp', vDatetime(datetime.now(pytz.utc)), encode=0)
+
+            # TODO jours feries
+            calendar_event.add(f'exdate', '20190501T010101', encode=0)
+            calendar_event.add(f'exdate', '20181101T010101', encode=0)
+
+            self.calendar.add_component(calendar_event)
+
+        # Convert from binary
+        return self.calendar.to_ical().decode()
+
 class WeeklyPlanning(Planning):
 
     def __init__(self, *args, **kwargs):
         super(WeeklyPlanning, self).__init__(*args, **kwargs)
+        self.frequency = 'weekly'
+
+
+class WeeklyPlanningTest(PlanningTest):
+
+    def __init__(self, *args, **kwargs):
+        super(WeeklyPlanningTest, self).__init__(*args, **kwargs)
         self.frequency = 'weekly'
 
 def get_holidays_weeks(date_start: datetime, date_end: datetime) -> list:

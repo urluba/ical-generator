@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta, date
 from flask import Flask, current_app, abort, make_response
 import pytz
-from ical import WeeklyPlanning, get_holidays_weeks
+from ical import WeeklyPlanning, get_holidays_weeks, WeeklyPlanningTest
 from ical import BUS_CALENDAR, SCHOOL_6A_CALENDAR, SCHOOL_6F_CALENDAR
 
 def create_app() -> Flask:
@@ -14,6 +14,15 @@ def create_app() -> Flask:
     app.config['bus_planning'] = WeeklyPlanning(
         name='bus',
         description='Calendrier des bus',
+        events=BUS_CALENDAR,
+        start=calendars_start,
+        end=calendars_end,
+        excluded_weeks=get_holidays_weeks(date_start=calendars_start, date_end=calendars_end),
+    ).render_calendar()
+
+    app.config['test_bus_planning'] = WeeklyPlanningTest(
+        name='Test on Bus',
+        description='Calendrier de tests a base de bus',
         events=BUS_CALENDAR,
         start=calendars_start,
         end=calendars_end,
@@ -54,6 +63,8 @@ def get_ical(planning_name: str) -> str:
         result = current_app.config['class_6a_planning']
     elif planning_name == '6f':
         result = current_app.config['class_6f_planning']
+    elif planning_name == 'test':
+        result = current_app.config['test_bus_planning']
     else:
         abort(404)
 
