@@ -553,6 +553,11 @@ class Planning(object):
                         hour=hours,
                         minute=minutes,
                     )
+
+                    if key == 'start':
+                        dtstart_hour = hours
+                        dtstart_minute = minutes
+
                     calendar_event.add(f'dt{key}', value, encode=0)
 
                 elif key == 'rrule':
@@ -560,7 +565,6 @@ class Planning(object):
                         freq='weekly',
                         interval=1,
                         until=self.end,
-                        wkst='MO'
                     ))
                     calendar_event.add(key, value)
                 else:
@@ -571,6 +575,13 @@ class Planning(object):
                     freq='yearly',
                     byweekno=self.excluded_weeks
                 ))
+
+            # EXRULE is obsolete in latest RFC!
+            # if self.excluded_weeks:
+            #     calendar_event.add('exrule', dict(
+            #         freq='yearly',
+            #         byweekno=self.excluded_weeks
+            #     ))
 
             # If UUID is dyn generated, it will result in duplicated events on iOS
             # if not event.get('uid'):
@@ -587,7 +598,11 @@ class Planning(object):
                 calendar_event.add('dtstamp', vDatetime(datetime.now(pytz.utc)), encode=0)
 
             # TODO jours feries
-            # calendar_event.add(f'exdate;{self.timezone}', '20190501T010101', encode=0)
+            # calendar_event.add(
+            #     f'exdate',
+            #     f'20181101T{dtstart_hour:02d}{dtstart_minute:02d}00',
+            #     encode=0
+            # )
 
             self.calendar.add_component(calendar_event)
 
@@ -692,6 +707,12 @@ class PlanningTest(object):
                 f'20180911T{dtstart_hour:02d}{dtstart_minute:02d}00',
                 encode=0
             )
+            calendar_event.add(
+                f'exdate',
+                f'20180913T{dtstart_hour:02d}{dtstart_minute:02d}00',
+                encode=0
+            )
+
 
             self.calendar.add_component(calendar_event)
 
