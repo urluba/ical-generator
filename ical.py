@@ -687,11 +687,11 @@ class PlanningTest(object):
                 calendar_event.add('dtstamp', vDatetime(datetime.now(pytz.utc)), encode=0)
 
             # TODO jours feries
-            # calendar_event.add(
-            #     f'exdate;{self.timezone}',
-            #     f'20180911T{dtstart_hour:02d}{dtstart_minute:02d}00',
-            #     encode=0
-            # )
+            calendar_event.add(
+                f'exdate',
+                f'20180911T{dtstart_hour:02d}{dtstart_minute:02d}00',
+                encode=0
+            )
 
             self.calendar.add_component(calendar_event)
 
