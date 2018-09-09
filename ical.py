@@ -579,8 +579,8 @@ class Planning(object):
                     byweekno=self.excluded_weeks
                 ))
 
-            if not event.get('uid'):
-                calendar_event.add('uid', uuid.uuid4())
+            # if not event.get('uid'):
+            #     calendar_event.add('uid', uuid.uuid4())
 
             # TODO check dtstamp, created at and co
             if not event.get('dtstamp'):
