@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta, date
 from flask import Flask, current_app, abort, make_response
 import pytz
-from ical import WeeklyPlanning, get_holidays_weeks, WeeklyPlanningTest
+from ical import WeeklyPlanning, get_holidays_weeks, days_off
 from ical import BUS_CALENDAR, SCHOOL_6A_CALENDAR, SCHOOL_6F_CALENDAR
 
 def create_app() -> Flask:
@@ -9,6 +9,7 @@ def create_app() -> Flask:
 
     calendars_start = datetime(2018, 9, 3, 0, 0, 0, 0, pytz.utc)
     calendars_end = datetime(2019, 7, 8, 0, 0, 0, 0, pytz.utc)
+    excluded_days = days_off(calendars_start, calendars_end)
 
     app = Flask(__name__)
     app.config['bus_planning'] = WeeklyPlanning(
@@ -17,16 +18,15 @@ def create_app() -> Flask:
         events=BUS_CALENDAR,
         start=calendars_start,
         end=calendars_end,
-        excluded_weeks=get_holidays_weeks(date_start=calendars_start, date_end=calendars_end),
     ).render_calendar()
 
-    app.config['test_bus_planning'] = WeeklyPlanningTest(
-        name='Test on Bus',
+    app.config['test_bus_planning'] = WeeklyPlanning(
+        name='test',
         description='Calendrier de tests a base de bus',
         events=BUS_CALENDAR,
         start=calendars_start,
         end=calendars_end,
-        excluded_weeks=get_holidays_weeks(date_start=calendars_start, date_end=calendars_end),
+        excluded_days=excluded_days,
     ).render_calendar()
 
     app.config['class_6a_planning'] = WeeklyPlanning(
@@ -35,7 +35,6 @@ def create_app() -> Flask:
         events=SCHOOL_6A_CALENDAR,
         start=calendars_start,
         end=calendars_end,
-        excluded_weeks=get_holidays_weeks(date_start=calendars_start, date_end=calendars_end),
     ).render_calendar()
 
     app.config['class_6f_planning'] = WeeklyPlanning(
@@ -44,7 +43,6 @@ def create_app() -> Flask:
         events=SCHOOL_6F_CALENDAR,
         start=calendars_start,
         end=calendars_end,
-        excluded_weeks=get_holidays_weeks(date_start=calendars_start, date_end=calendars_end),
     ).render_calendar()
 
     return app
