@@ -18,6 +18,7 @@ def create_app() -> Flask:
         events=BUS_CALENDAR,
         start=calendars_start,
         end=calendars_end,
+        excluded_days=excluded_days,
     ).render_calendar()
 
     app.config['test_bus_planning'] = WeeklyPlanning(
@@ -35,6 +36,7 @@ def create_app() -> Flask:
         events=SCHOOL_6A_CALENDAR,
         start=calendars_start,
         end=calendars_end,
+        excluded_days=excluded_days,
     ).render_calendar()
 
     app.config['class_6f_planning'] = WeeklyPlanning(
@@ -43,6 +45,7 @@ def create_app() -> Flask:
         events=SCHOOL_6F_CALENDAR,
         start=calendars_start,
         end=calendars_end,
+        excluded_days=excluded_days,
     ).render_calendar()
 
     return app
