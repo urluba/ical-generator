@@ -18,7 +18,7 @@ def create_app() -> Flask:
         start=calendars_start,
         end=calendars_end,
         excluded_weeks=get_holidays_weeks(date_start=calendars_start, date_end=calendars_end),
-    )
+    ).render_calendar()
 
     return app
 
@@ -31,7 +31,7 @@ def get_ical(planning_name: str) -> str:
     '''
 
     if planning_name == 'bus':
-        result = current_app.config['bus_planning'].render_calendar()
+        result = current_app.config['bus_planning']
     # elif planning_name == '6a':
     #     result = generate_6a_calendar(current_app.config['school_weeks'])
     # elif planning_name == '6f':
