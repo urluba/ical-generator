@@ -634,7 +634,7 @@ class PlanningTest(Planning):
                 else:
                     calendar_event.add(key, value)
 
-                break
+            break
 
             # EXRULE is obsolete in latest RFC!
             # if self.excluded_weeks:
