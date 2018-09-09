@@ -652,7 +652,7 @@ class PlanningTest(object):
                         dtstart_hour = hours
                         dtstart_minute = minutes
 
-                    calendar_event.add(f'dt{key};{self.timezone}', value, encode=0)
+                    calendar_event.add(f'dt{key}', value, encode=0)
 
                 elif key == 'rrule':
                     value.update(dict(
