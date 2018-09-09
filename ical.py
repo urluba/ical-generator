@@ -5,8 +5,8 @@ import pytz
 import uuid
 
 TIMEZONE = pytz.timezone('Europe/Paris')
-BUS_CALENDAR_START = datetime(2018, 9, 3, 0, 0, 0, 0, pytz.utc)
-BUS_CALENDAR_END = datetime(2019, 7, 8, 0, 0, 0, 0, pytz.utc)
+BUS_CALENDAR_START = datetime(2018, 9, 3, 1, 0, 1, 0, pytz.utc)
+BUS_CALENDAR_END = datetime(2019, 7, 8, 1, 0, 1, 0, pytz.utc)
 
 SCHOOL_CALENDAR_START = BUS_CALENDAR_START
 SCHOOL_CALENDAR_END = BUS_CALENDAR_END
@@ -583,6 +583,13 @@ class Planning(object):
             #     calendar_event.add('uid', uuid.uuid4())
 
             # TODO check dtstamp, created at and co
+            # CREATED
+            # This is the timestamp of when an event-object was created in a calendar application. Each event-object can be identified by a unique Identifier (UID).
+            if not event.get('created'):
+                calendar_event.add('created', self.start)
+
+            # DTSTAMP
+            # This is the timestamp of the creation of a VEVENT-message in an ical or ics file. There are different types of such VEVENT-message, creating a new event-object is just one of them. You also can change existing events and even cancel events if you add the correct UID to the VEVENT-message to identify which event-object it belongs to. So for one event-object in your calendar application (identified by its UID) you can receive many VEVENT-events, each with its own DTSTAMP, but all referring to an event with just one CREATED date.
             if not event.get('dtstamp'):
                 calendar_event.add('dtstamp', vDatetime(datetime.now(pytz.utc)), encode=0)
 
