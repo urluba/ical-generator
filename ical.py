@@ -571,10 +571,6 @@ class Planning(object):
                     until=self.end,
                 ))
 
-                if self.week_numbers:
-                    event['rrule'].update(dict(byweekno=self.week_numbers))
-
-
             # Parse and all all remaining keys
             for key, value in event.items():
                 # start/end must be 'converted' to dtstart/dtend
@@ -612,6 +608,14 @@ class Planning(object):
             #         freq='yearly',
             #         byweekno=self.excluded_weeks
             #     ))
+
+            if self.week_numbers:
+                calendar_event.add(
+                    'rrule', dict(
+                        freq='yearly',
+                        byweekno=self.week_numbers
+                    )
+                )
 
             # If UUID is dyn generated, it will result in duplicated events on iOS
             if set_missing_uid and not event.get('uid'):
