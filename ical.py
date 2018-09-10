@@ -536,11 +536,33 @@ class Planning(object):
         '''
 
         if self.name == 'test':
-            print(days_off(self.start, self.end))
+            print('Tests function enabled')
 
         for event in self.events:
             calendar_event = Event()
+            event_week = None
+
+            # Set week occurency in title
+            week_type = event.pop('week_type', False)
+            event_summary = event.pop('summary', False)
+            if week_type and event_summary:
+                calendar_event.add('summary', f'({week_type}) {event_summary}')
+
+            if event_summary:
+                calendar_event.add('summary', event_summary)
+
+
+            # Complete reccurence rule
+            if event.get('rrule'):
+                event['rrule'].update(dict(
+                    freq=self.frequency,
+                    interval=1,
+                    until=self.end,
+                ))
+
+            # Parse and all all remaining keys
             for key, value in event.items():
+                # start/end must be 'converted' to dtstart/dtend
                 if key in ['start', 'end']:
                     # Optionnal offset to fix display in google agenda
                     if len(value) == 2:
@@ -565,22 +587,9 @@ class Planning(object):
                         dtstart_minute = minutes
 
                     calendar_event.add(f'dt{key}', value, encode=0)
+                    continue
 
-                elif key == 'rrule':
-                    value.update(dict(
-                        freq='weekly',
-                        interval=1,
-                        until=self.end,
-                    ))
-                    calendar_event.add(key, value)
-                else:
-                    calendar_event.add(key, value)
-
-            if self.excluded_weeks:
-                calendar_event.add('exrule', dict(
-                    freq='yearly',
-                    byweekno=self.excluded_weeks
-                ))
+                calendar_event.add(key, value)
 
             # EXRULE is obsolete in latest RFC!
             # if self.excluded_weeks:
@@ -611,6 +620,7 @@ class Planning(object):
                     encode=0
                 )
 
+            # Add event to calendar
             self.calendar.add_component(calendar_event)
 
             # I have to install iOS devkit / sim
