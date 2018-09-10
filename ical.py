@@ -694,7 +694,6 @@ def get_school_year_boundaries(holidays_file: str = ('calendrier_scolaire.ics'))
     List is an alternance of start / stop
     '''
 
-    holidays_file = ('Calendrier_Scolaire_Zone_C.ics')
     with open(holidays_file) as file_descriptor:
         data = file_descriptor.read()
 
