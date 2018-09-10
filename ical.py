@@ -710,12 +710,9 @@ def get_school_year_boundaries(holidays_file: str = ('calendrier_scolaire.ics'))
     all_events = sorted(all_events)
     end_date = all_events[0] + relativedelta(months=11)
 
-    # result = [datetime.combine(boundarie, datetime.min.time()) for boundarie in all_events if boundarie < end_date]
-    result = [boundarie for boundarie in all_events if boundarie < end_date]
+    result = [datetime.combine(boundarie, datetime.min.time()) for boundarie in all_events if boundarie < end_date]
+    # result = [boundarie for boundarie in all_events if boundarie < end_date]
 
     return result
 
-if __name__ == '__main__':
-    boundaries = get_school_year_boundaries()
-    print(boundaries[0])
-    print(boundaries[-1])
+# End file

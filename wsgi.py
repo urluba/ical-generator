@@ -7,13 +7,15 @@ from ical import BUS_CALENDAR, SCHOOL_6A_CALENDAR, SCHOOL_6F_CALENDAR, TEST_CALE
 def create_app() -> Flask:
     ''' Return a Flask application '''
 
-    calendars_start = datetime(2018, 9, 3, 0, 0, 0, 0, pytz.utc)
-    calendars_end = datetime(2019, 7, 8, 0, 0, 0, 0, pytz.utc)
+    school_year_boundaries = get_school_year_boundaries()
+    calendars_start = school_year_boundaries[0]
+    calendars_end = school_year_boundaries[-1]
+    # calendars_start = datetime(2018, 9, 3, 0, 0, 0, 0, pytz.utc)
+    # calendars_end = datetime(2019, 7, 8, 0, 0, 0, 0, pytz.utc)
+
     excluded_days = days_off(calendars_start, calendars_end)
 
-    school_year_boundaries = get_school_year_boundaries()
-    test_start = school_year_boundaries[0]
-    test_stop = school_year_boundaries[-1]
+
 
     app = Flask(__name__)
     app.config['bus_planning'] = WeeklyPlanning(
@@ -29,8 +31,8 @@ def create_app() -> Flask:
         name='test',
         description='Calendrier de tests a base de bus',
         events=TEST_CALENDAR,
-        start=test_start,
-        end=test_stop,
+        start=calendars_start,
+        end=calendars_end,
         excluded_days=excluded_days,
     ).render_calendar()
 
