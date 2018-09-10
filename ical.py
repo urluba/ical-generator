@@ -568,7 +568,6 @@ class Planning(object):
                 if self.week_numbers:
                     event['rrule'].update(dict(
                         freq='yearly',
-                        interval=1,
                         byweekno=self.week_numbers,
                         until=self.end,
                         wkst='MO'
