@@ -2,7 +2,7 @@ from datetime import datetime, timedelta, date
 from flask import Flask, current_app, abort, make_response
 import pytz
 from ical import WeeklyPlanning, get_holidays_weeks, days_off
-from ical import BUS_CALENDAR, SCHOOL_6A_CALENDAR, SCHOOL_6F_CALENDAR
+from ical import BUS_CALENDAR, SCHOOL_6A_CALENDAR, SCHOOL_6F_CALENDAR, TEST_CALENDAR
 
 def create_app() -> Flask:
     ''' Return a Flask application '''
@@ -24,7 +24,7 @@ def create_app() -> Flask:
     app.config['test_bus_planning'] = WeeklyPlanning(
         name='test',
         description='Calendrier de tests a base de bus',
-        events=BUS_CALENDAR,
+        events=TEST_CALENDAR,
         start=calendars_start,
         end=calendars_end,
         excluded_days=excluded_days,

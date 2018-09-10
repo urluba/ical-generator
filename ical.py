@@ -500,6 +500,18 @@ BUS_CALENDAR = [
     ),
 ]
 
+TEST_CALENDAR = [
+    dict(
+        summary='roseraie',
+        start=(7, 51),
+        duration=timedelta(minutes=1),
+        location='roseraie',
+        rrule=dict(
+            byday=['MO', 'TU', 'WE', 'TH', 'FR'],
+        )
+    ),
+]
+
 class Planning(object):
     def __init__(self,
             events: list,
@@ -621,10 +633,6 @@ class Planning(object):
 
             # Add event to calendar
             self.calendar.add_component(calendar_event)
-
-            # I have to install iOS devkit / sim
-            if self.name == 'test':
-                break
 
         # Convert from binary
         return self.calendar.to_ical().decode()
