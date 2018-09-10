@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta, date
 from flask import Flask, current_app, abort, make_response
 import pytz
-from ical import WeeklyPlanning, get_holidays_weeks, days_off
+from ical import WeeklyPlanning, days_off, get_school_year_boundaries
 from ical import BUS_CALENDAR, SCHOOL_6A_CALENDAR, SCHOOL_6F_CALENDAR, TEST_CALENDAR
 
 def create_app() -> Flask:
@@ -10,6 +10,10 @@ def create_app() -> Flask:
     calendars_start = datetime(2018, 9, 3, 0, 0, 0, 0, pytz.utc)
     calendars_end = datetime(2019, 7, 8, 0, 0, 0, 0, pytz.utc)
     excluded_days = days_off(calendars_start, calendars_end)
+
+    school_year_boundaries = get_school_year_boundaries()
+    test_start = school_year_boundaries[0]
+    test_stop = school_year_boundaries[-1]
 
     app = Flask(__name__)
     app.config['bus_planning'] = WeeklyPlanning(
@@ -25,10 +29,9 @@ def create_app() -> Flask:
         name='test',
         description='Calendrier de tests a base de bus',
         events=TEST_CALENDAR,
-        start=calendars_start,
-        end=calendars_end,
+        start=test_start,
+        end=test_stop,
         excluded_days=excluded_days,
-        week_numbers=[39, 41]
     ).render_calendar()
 
     app.config['class_6a_planning'] = WeeklyPlanning(

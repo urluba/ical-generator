@@ -522,7 +522,6 @@ class Planning(object):
             description: str = 'Calendrier',
             timezone=pytz.timezone('Europe/Paris'),
             excluded_days: list = list(),
-            week_numbers: list = list(),
         ):
 
         self.name = name
@@ -532,7 +531,6 @@ class Planning(object):
         self.frequency = frequency
         self.timezone = timezone
         self.excluded_days = excluded_days
-        self.week_numbers = week_numbers
 
         self.calendar = Calendar()
         self.calendar.add('version', '2.0')
@@ -565,19 +563,12 @@ class Planning(object):
 
             # Complete reccurence rule
             if event.get('rrule'):
-                if self.week_numbers:
-                    event['rrule'].update(dict(
-                        freq='yearly',
-                        byweekno=self.week_numbers,
-                        until=self.end,
-                        wkst='MO'
-                    ))
-                else:
-                    event['rrule'].update(dict(
-                        freq=self.frequency,
-                        interval=1,
-                        until=self.end,
-                    ))
+                # Looks like iCal does NOT manage BYWEEKNO... shame
+                event['rrule'].update(dict(
+                    freq=self.frequency,
+                    interval=1,
+                    until=self.end,
+                ))
 
             # Parse and all all remaining keys
             for key, value in event.items():
@@ -696,60 +687,36 @@ def days_off(
 
     return result
 
-def get_holidays_weeks(date_start: datetime, date_end: datetime) -> list:
+
+def get_school_year_boundaries(holidays_file: str = ('Calendrier_Scolaire_Zone_C.ics')) -> list:
     '''
-    Return a list of all holidays weeks number
+    Return a list of datetime. 
+    List is an alternance of start / stop
     '''
-    result = list()
 
     holidays_file = ('Calendrier_Scolaire_Zone_C.ics')
     with open(holidays_file) as file_descriptor:
         data = file_descriptor.read()
 
     holidays_calendar = Calendar.from_ical(data)
+    all_events = list()
     for event in holidays_calendar.walk(name='VEVENT'):
-        # Get all holidays for Zone C:
-        if all([
-            'Vacances' in event.get('summary'),
-            # 'Zone A' not in event.get('summary'),
-            # 'Zone B' not in event.get('summary'),
-        ]):
-            dt_start = event.get('dtstart').dt.replace(
-                tzinfo=pytz.timezone('Europe/Paris')
-            )
+        if 'enseignants' in event.get('summary', ''):
+            continue
 
-            dt_end = event.get('dtend').dt.replace(
-                tzinfo=pytz.timezone('Europe/Paris')
-            )
+        for field in ['dtstart', 'dtend']:
+            if event.get(field):
+                all_events.append(event[field].dt)
+    
+    all_events = sorted(all_events)
+    end_date = all_events[0] + relativedelta(months=11)
 
-            # Summer holidays has no duration
-            if dt_start == dt_end:
-                continue
+    # result = [datetime.combine(boundarie, datetime.min.time()) for boundarie in all_events if boundarie < end_date]
+    result = [boundarie for boundarie in all_events if boundarie < end_date]
 
-            # Official calendar starts holidays at the end of the week
-            dt_start = dt_start + relativedelta(weekday=MO(1))
+    return result
 
-            # Official calendars has both calendar and scholar years
-            if dt_start < date_start.replace(tzinfo=pytz.timezone('Europe/Paris')):
-                continue
-
-            if dt_end > date_end.replace(tzinfo=pytz.timezone('Europe/Paris')):
-                continue
-
-            start_week = dt_start.isocalendar()[1]
-            end_week = dt_end.isocalendar()[1]
-
-            # if 'Vacances de Noël' == event['summary']:
-            if start_week > end_week:
-                last_yearly_week = date(dt_start.isocalendar()[0], 12, 28).isocalendar()[1]
-
-                holidays_weeks = list()
-                holidays_weeks.extend(range(start_week, last_yearly_week+1))
-                holidays_weeks.extend(range(1, end_week))
-            else:
-                holidays_weeks = range(start_week, end_week)
-
-
-            result.extend(holidays_weeks)
-
-    return sorted(result)
+if __name__ == '__main__':
+    boundaries = get_school_year_boundaries()
+    print(boundaries[0])
+    print(boundaries[-1])
