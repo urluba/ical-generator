@@ -56,34 +56,6 @@ def create_app() -> Flask:
         excluded_days=excluded_days,
     )
 
-
-    # app.config['bus_planning'] = WeeklyPlanning(
-    #     name='bus',
-    #     description='Calendrier des bus',
-    #     events=BUS_CALENDAR,
-    #     start=calendars_start,
-    #     end=calendars_end,
-    #     excluded_days=excluded_days,
-    # ).render_calendar()
-
-    # app.config['class_6a_planning'] = WeeklyPlanning(
-    #     name='6A',
-    #     description='Calendrier de la 6°A',
-    #     events=SCHOOL_6A_CALENDAR,
-    #     start=calendars_start,
-    #     end=calendars_end,
-    #     excluded_days=excluded_days,
-    # ).render_calendar()
-
-    # app.config['class_6f_planning'] = WeeklyPlanning(
-    #     name='6F',
-    #     description='Calendrier de la 6°F',
-    #     events=SCHOOL_6F_CALENDAR,
-    #     start=calendars_start,
-    #     end=calendars_end,
-    #     excluded_days=excluded_days,
-    # ).render_calendar()
-
     return app
 
 FLASK_APP = create_app()
