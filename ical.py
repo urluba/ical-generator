@@ -688,7 +688,7 @@ def days_off(
     return result
 
 
-def get_school_year_boundaries(holidays_file: str = ('Calendrier_Scolaire_Zone_C.ics')) -> list:
+def get_school_year_boundaries(holidays_file: str = ('calendrier_scolaire_zone_C.ics')) -> list:
     '''
     Return a list of datetime. 
     List is an alternance of start / stop
