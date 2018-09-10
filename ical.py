@@ -642,6 +642,19 @@ class WeeklyPlanning(Planning):
         super(WeeklyPlanning, self).__init__(*args, **kwargs)
         self.frequency = 'weekly'
 
+
+def merge_calendars(calendars: list) -> Calendar:
+    '''
+    Merge a list of calendars into one
+    Property of the first calendars are kept
+    '''
+    mega_calendar = calendars.pop(0)
+    for current_calendar in calendars:
+        for event in current_calendar.walk(name='VEVENT'):
+            mega_calendar.add_component(event)
+
+    return mega_calendar
+
 def days_off(
         date_start: datetime,
         date_end: datetime,
@@ -714,5 +727,66 @@ def get_school_year_boundaries(holidays_file: str = ('calendrier_scolaire.ics'))
     # result = [boundarie for boundarie in all_events if boundarie < end_date]
 
     return result
+
+
+def render_calendars(date_boundaries, **kwargs) -> list:
+    '''
+    Generate multiple calendars
+    '''
+    if any([
+        len(date_boundaries) %2 != 0,
+        len(date_boundaries) < 2,
+    ]):
+        raise ValueError('Boundaries has a wrong size')
+
+    common_name = kwargs.get('name', '')
+    common_description = kwargs.get('description', '')
+    common_events = kwargs.get('events')
+    common_excluded_days = kwargs.get('excluded_days', list()),
+
+    common_arguments = dict(
+        name=kwargs.get('name', ''),
+        description=kwargs.get('description', ''),
+        events=kwargs.get('events'),
+    )
+
+    if kwargs.get('excluded_days'):
+        common_arguments.update(dict(excluded_days=kwargs['excluded_days']))
+
+    calendars = list()
+    while date_boundaries:
+        date_start = date_boundaries.pop(0)
+        date_stop = date_boundaries.pop(0)
+
+        # print(f'Doing from {date_start} to {date_stop}')
+
+        partial_calendar = WeeklyPlanning(
+            **common_arguments,
+            start=date_start,
+            end=date_stop,
+        )
+        partial_calendar.render_calendar()
+        calendars.append(partial_calendar.calendar)
+
+    return merge_calendars(calendars).to_ical().decode()
+
+if __name__ == '__main__':
+    school_year_boundaries = get_school_year_boundaries()
+    the_meg = render_calendars(
+        date_boundaries=school_year_boundaries,
+        name='test',
+        description='Calendrier de tests a base de bus',
+        events=TEST_CALENDAR,
+    )
+
+    print(the_meg)
+    # app.config['test_bus_planning'] = WeeklyPlanning(
+    #     name='test',
+    #     description='Calendrier de tests a base de bus',
+    #     events=TEST_CALENDAR,
+    #     start=calendars_start,
+    #     end=calendars_end,
+    #     excluded_days=excluded_days,
+    # ).render_calendar()
 
 # End file

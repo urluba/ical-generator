@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta, date
 from flask import Flask, current_app, abort, make_response
 import pytz
-from ical import WeeklyPlanning, days_off, get_school_year_boundaries
+from ical import WeeklyPlanning, days_off, get_school_year_boundaries, render_calendars
 from ical import BUS_CALENDAR, SCHOOL_6A_CALENDAR, SCHOOL_6F_CALENDAR, TEST_CALENDAR
 
 def create_app() -> Flask:
@@ -10,8 +10,6 @@ def create_app() -> Flask:
     school_year_boundaries = get_school_year_boundaries()
     calendars_start = school_year_boundaries[0]
     calendars_end = school_year_boundaries[-1]
-    # calendars_start = datetime(2018, 9, 3, 0, 0, 0, 0, pytz.utc)
-    # calendars_end = datetime(2019, 7, 8, 0, 0, 0, 0, pytz.utc)
 
     excluded_days = days_off(calendars_start, calendars_end)
 
@@ -27,14 +25,23 @@ def create_app() -> Flask:
         excluded_days=excluded_days,
     ).render_calendar()
 
-    app.config['test_bus_planning'] = WeeklyPlanning(
+    # app.config['test_bus_planning'] = WeeklyPlanning(
+    #     name='test',
+    #     description='Calendrier de tests a base de bus',
+    #     events=TEST_CALENDAR,
+    #     start=calendars_start,
+    #     end=calendars_end,
+    #     excluded_days=excluded_days,
+    # ).render_calendar()
+
+
+    app.config['test_bus_planning'] = render_calendars(
+        date_boundaries=school_year_boundaries,
         name='test',
-        description='Calendrier de tests a base de bus',
+        description='Calendrier de tests',
         events=TEST_CALENDAR,
-        start=calendars_start,
-        end=calendars_end,
         excluded_days=excluded_days,
-    ).render_calendar()
+    )
 
     app.config['class_6a_planning'] = WeeklyPlanning(
         name='6A',
