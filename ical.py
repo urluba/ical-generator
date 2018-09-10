@@ -521,8 +521,8 @@ class Planning(object):
             name: str = 'Calendrier',
             description: str = 'Calendrier',
             timezone=pytz.timezone('Europe/Paris'),
-            excluded_weeks: list = list(),
             excluded_days: list = list(),
+            week_numbers: list = list(),
         ):
 
         self.name = name
@@ -530,9 +530,9 @@ class Planning(object):
         self.start = start
         self.end = end
         self.frequency = frequency
-        self.excluded_weeks = excluded_weeks
         self.timezone = timezone
         self.excluded_days = excluded_days
+        self.week_numbers = week_numbers
 
         self.calendar = Calendar()
         self.calendar.add('version', '2.0')
@@ -542,7 +542,7 @@ class Planning(object):
         self.calendar.add('x-wr-calname', name)
         self.calendar.add('x-wr-caldesc', description)
 
-    def render_calendar(self) -> str:
+    def render_calendar(self, set_missing_uid: bool = False) -> str:
         '''
         Return a calendar for school bus
         '''
@@ -570,6 +570,10 @@ class Planning(object):
                     interval=1,
                     until=self.end,
                 ))
+
+                if self.week_numbers:
+                    event['rrule'].update(dict(byweekno=self.week_numbers))
+
 
             # Parse and all all remaining keys
             for key, value in event.items():
@@ -610,8 +614,8 @@ class Planning(object):
             #     ))
 
             # If UUID is dyn generated, it will result in duplicated events on iOS
-            # if not event.get('uid'):
-            #     calendar_event.add('uid', uuid.uuid4())
+            if set_missing_uid and not event.get('uid'):
+                calendar_event.add('uid', uuid.uuid4())
 
             # CREATED
             # This is the timestamp of when an event-object was created in a calendar application. Each event-object can be identified by a unique Identifier (UID).

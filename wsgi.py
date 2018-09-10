@@ -28,6 +28,7 @@ def create_app() -> Flask:
         start=calendars_start,
         end=calendars_end,
         excluded_days=excluded_days,
+        week_numbers=[37,39]
     ).render_calendar()
 
     app.config['class_6a_planning'] = WeeklyPlanning(
