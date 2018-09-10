@@ -545,12 +545,11 @@ class Planning(object):
             # Set week occurency in title
             week_type = event.pop('week_type', False)
             event_summary = event.pop('summary', False)
-            if week_type and event_summary:
-                calendar_event.add('summary', f'({week_type}) {event_summary}')
-
             if event_summary:
-                calendar_event.add('summary', event_summary)
-
+                if week_type:
+                    calendar_event.add('summary', f'({week_type}) {event_summary}')
+                else:
+                    calendar_event.add('summary', event_summary)
 
             # Complete reccurence rule
             if event.get('rrule'):
