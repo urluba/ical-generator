@@ -13,17 +13,7 @@ def create_app() -> Flask:
 
     excluded_days = days_off(calendars_start, calendars_end)
 
-
-
     app = Flask(__name__)
-    app.config['bus_planning'] = WeeklyPlanning(
-        name='bus',
-        description='Calendrier des bus',
-        events=BUS_CALENDAR,
-        start=calendars_start,
-        end=calendars_end,
-        excluded_days=excluded_days,
-    ).render_calendar()
 
     # app.config['test_bus_planning'] = WeeklyPlanning(
     #     name='test',
@@ -34,32 +24,65 @@ def create_app() -> Flask:
     #     excluded_days=excluded_days,
     # ).render_calendar()
 
-
     app.config['test_bus_planning'] = render_calendars(
-        date_boundaries=school_year_boundaries,
+        date_boundaries=school_year_boundaries.copy(),
         name='test',
         description='Calendrier de tests',
         events=TEST_CALENDAR,
         excluded_days=excluded_days,
     )
 
-    app.config['class_6a_planning'] = WeeklyPlanning(
+    app.config['bus_planning'] = render_calendars(
+        date_boundaries=school_year_boundaries.copy(),
+        name='bus',
+        description='Calendrier des bus',
+        events=BUS_CALENDAR,
+        excluded_days=excluded_days,
+    )
+
+    app.config['class_6a_planning'] = render_calendars(
+        date_boundaries=school_year_boundaries.copy(),
         name='6A',
         description='Calendrier de la 6°A',
         events=SCHOOL_6A_CALENDAR,
-        start=calendars_start,
-        end=calendars_end,
         excluded_days=excluded_days,
-    ).render_calendar()
+    )
 
-    app.config['class_6f_planning'] = WeeklyPlanning(
+    app.config['class_6f_planning'] = render_calendars(
+        date_boundaries=school_year_boundaries.copy(),
         name='6F',
         description='Calendrier de la 6°F',
         events=SCHOOL_6F_CALENDAR,
-        start=calendars_start,
-        end=calendars_end,
         excluded_days=excluded_days,
-    ).render_calendar()
+    )
+
+
+    # app.config['bus_planning'] = WeeklyPlanning(
+    #     name='bus',
+    #     description='Calendrier des bus',
+    #     events=BUS_CALENDAR,
+    #     start=calendars_start,
+    #     end=calendars_end,
+    #     excluded_days=excluded_days,
+    # ).render_calendar()
+
+    # app.config['class_6a_planning'] = WeeklyPlanning(
+    #     name='6A',
+    #     description='Calendrier de la 6°A',
+    #     events=SCHOOL_6A_CALENDAR,
+    #     start=calendars_start,
+    #     end=calendars_end,
+    #     excluded_days=excluded_days,
+    # ).render_calendar()
+
+    # app.config['class_6f_planning'] = WeeklyPlanning(
+    #     name='6F',
+    #     description='Calendrier de la 6°F',
+    #     events=SCHOOL_6F_CALENDAR,
+    #     start=calendars_start,
+    #     end=calendars_end,
+    #     excluded_days=excluded_days,
+    # ).render_calendar()
 
     return app
 

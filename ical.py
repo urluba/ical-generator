@@ -624,11 +624,18 @@ class Planning(object):
 
             # EXDATE must have the same TIME that DSTART
             for exdate in self.excluded_days:
-                calendar_event.add(
-                    f'exdate',
-                    f'{exdate}T{dtstart_hour:02d}{dtstart_minute:02d}00',
-                    encode=0
-                )
+                exdate_format = '%Y%m%d' # The format
+                exdate_datime = datetime.strptime(exdate, exdate_format)
+
+                if all([
+                    exdate_datime >= self.start,
+                    exdate_datime <= self.end,
+                ]):
+                    calendar_event.add(
+                        f'exdate',
+                        f'{exdate}T{dtstart_hour:02d}{dtstart_minute:02d}00',
+                        encode=0
+                    )
 
             # Add event to calendar
             self.calendar.add_component(calendar_event)
@@ -737,7 +744,7 @@ def render_calendars(date_boundaries, **kwargs) -> list:
         len(date_boundaries) %2 != 0,
         len(date_boundaries) < 2,
     ]):
-        raise ValueError('Boundaries has a wrong size')
+        raise ValueError(f'Boundaries has a wrong size ({len(date_boundaries)})')
 
     common_name = kwargs.get('name', '')
     common_description = kwargs.get('description', '')
