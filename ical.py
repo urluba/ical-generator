@@ -502,7 +502,7 @@ BUS_CALENDAR = [
 
 TEST_CALENDAR = [
     dict(
-        summary='roseraie',
+        summary='test calendrier',
         start=(7, 51),
         duration=timedelta(minutes=1),
         location='roseraie',
@@ -565,11 +565,20 @@ class Planning(object):
 
             # Complete reccurence rule
             if event.get('rrule'):
-                event['rrule'].update(dict(
-                    freq=self.frequency,
-                    interval=1,
-                    until=self.end,
-                ))
+                if self.week_numbers:
+                    event['rrule'].update(dict(
+                        freq='yearly',
+                        interval=1,
+                        byweekno=self.week_numbers,
+                        until=self.end,
+                        wkst='MO'
+                    ))
+                else:
+                    event['rrule'].update(dict(
+                        freq=self.frequency,
+                        interval=1,
+                        until=self.end,
+                    ))
 
             # Parse and all all remaining keys
             for key, value in event.items():
@@ -608,14 +617,6 @@ class Planning(object):
             #         freq='yearly',
             #         byweekno=self.excluded_weeks
             #     ))
-
-            if self.week_numbers:
-                calendar_event.add(
-                    'rrule', dict(
-                        freq='yearly',
-                        byweekno=self.week_numbers
-                    )
-                )
 
             # If UUID is dyn generated, it will result in duplicated events on iOS
             if set_missing_uid and not event.get('uid'):
