@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta, MO, SU
 from icalendar import Calendar, Event, vDatetime
+import copy
 import pytz
 import uuid
 
@@ -548,7 +549,7 @@ class Planning(object):
         if self.name == 'test':
             print('Tests function enabled')
 
-        for event in self.events:
+        for event in copy.deepcopy(self.events):
             calendar_event = Event()
             event_week = None
 
